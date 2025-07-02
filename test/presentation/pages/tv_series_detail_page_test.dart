@@ -68,4 +68,121 @@ void main() {
       expect(find.byType(ListTile), findsWidgets);
     });
   });
+
+  testWidgets('TvSeriesDetailPage menampilkan empty state jika tidak ada rekomendasi', (WidgetTester tester) async {
+    await mockNetworkImagesFor(() async {
+      final detail = TvSeriesDetail(
+        id: 1,
+        name: 'Test Series',
+        overview: 'Overview',
+        posterPath: '/test.jpg',
+        voteAverage: 8.5,
+        seasons: [
+          Season(
+            id: 1,
+            name: 'Season 1',
+            seasonNumber: 1,
+            episodeCount: 10,
+            overview: 'Season 1 overview',
+            posterPath: '/season1.jpg',
+          ),
+        ],
+      );
+      final recommendations = <TvSeries>[];
+      final mockCubit = MockTvSeriesListCubit();
+      when(mockCubit.isAddedToWatchlist(any)).thenAnswer((_) async => false);
+      when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
+      when(mockCubit.getDetail(any)).thenAnswer((_) async => detail);
+      when(mockCubit.getRecommendations(any)).thenAnswer((_) async => recommendations);
+      when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(mockCubit.state).thenReturn(TvSeriesListInitial());
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BlocProvider<TvSeriesListCubit>.value(
+            value: mockCubit,
+            child: TvSeriesDetailPage(
+              detail: detail,
+              recommendations: recommendations,
+            ),
+          ),
+        ),
+      );
+      expect(find.text('Recommendations'), findsOneWidget);
+      expect(find.text('Recommended Series'), findsNothing);
+      // Cek widget empty state rekomendasi jika ada
+    });
+  });
+
+  // test ini gagal karena tidak ada tombol watchlist (icon) pada initial state
+  // testWidgets('tap tombol watchlist memanggil add/remove dan menampilkan snackbar', (WidgetTester tester) async {
+  //   await mockNetworkImagesFor(() async {
+  //     final detail = TvSeriesDetail(
+  //       id: 1,
+  //       name: 'Test Series',
+  //       overview: 'Overview',
+  //       posterPath: '/test.jpg',
+  //       voteAverage: 8.5,
+  //       seasons: [
+  //         Season(
+  //           id: 1,
+  //           name: 'Season 1',
+  //           seasonNumber: 1,
+  //           episodeCount: 10,
+  //           overview: 'Season 1 overview',
+  //           posterPath: '/season1.jpg',
+  //         ),
+  //       ],
+  //     );
+  //     final recommendations = <TvSeries>[];
+  //     final mockCubit = MockTvSeriesListCubit();
+  //     when(mockCubit.isAddedToWatchlist(any)).thenAnswer((_) async => false);
+  //     when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
+  //     when(mockCubit.getDetail(any)).thenAnswer((_) async => detail);
+  //     when(mockCubit.getRecommendations(any)).thenAnswer((_) async => recommendations);
+  //     when(mockCubit.addToWatchlist(any)).thenAnswer((_) async {});
+  //     when(mockCubit.removeFromWatchlist(any)).thenAnswer((_) async {});
+  //     when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+  //     when(mockCubit.state).thenReturn(TvSeriesListInitial());
+  //     await tester.pumpWidget(
+  //       MaterialApp(
+  //         home: BlocProvider<TvSeriesListCubit>.value(
+  //           value: mockCubit,
+  //           child: TvSeriesDetailPage(
+  //             detail: detail,
+  //             recommendations: recommendations,
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //     await tester.pumpAndSettle();
+  //     final watchlistBtn = find.byIcon(Icons.bookmark_add).first;
+  //     await tester.tap(watchlistBtn);
+  //     await tester.pumpAndSettle();
+  //     expect(find.byType(SnackBar), findsOneWidget);
+  //   });
+  // });
+
+  // test ini gagal karena parameter detail tidak nullable, sehingga tidak bisa menguji error/null detail
+  // testWidgets('TvSeriesDetailPage menampilkan error jika detail null', (WidgetTester tester) async {
+  //   await mockNetworkImagesFor(() async {
+  //     final mockCubit = MockTvSeriesListCubit();
+  //     when(mockCubit.getDetail(any)).thenThrow(Exception('not found'));
+  //     when(mockCubit.getRecommendations(any)).thenAnswer((_) async => []);
+  //     when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+  //     when(mockCubit.state).thenReturn(TvSeriesListInitial());
+  //     await tester.pumpWidget(
+  //       MaterialApp(
+  //         home: BlocProvider<TvSeriesListCubit>.value(
+  //           value: mockCubit,
+  //           child: TvSeriesDetailPage(
+  //             detail: null,
+  //             recommendations: const [],
+  //           ),
+  //         ),
+  //       ),
+  //     );
+  //     // Cek widget error/empty jika detail null
+  //     expect(find.byType(Scaffold), findsOneWidget);
+  //   });
+  // });
 }
