@@ -68,21 +68,24 @@ class WatchlistPage extends StatelessWidget {
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () async {
                         // Hapus dari watchlist
+                        final currentContext = context;
                         await onRemove(tv.id);
                         // Refresh halaman setelah hapus
-                        if (context.mounted) {
-                          final cubit = context.read<TvSeriesListCubit>();
+                        if (currentContext.mounted) {
+                          final cubit = currentContext.read<TvSeriesListCubit>();
                           final updated = await cubit.getWatchlistList();
-                          Navigator.pop(context);
-                          Navigator.pushNamed(
-                            context,
-                            '/watchlist',
-                            arguments: {
-                              'watchlist': updated,
-                              'onRemove': onRemove,
-                              'onTapDetail': onTapDetail,
-                            },
-                          );
+                          if (currentContext.mounted) {
+                            Navigator.pop(currentContext);
+                            Navigator.pushNamed(
+                              currentContext,
+                              '/watchlist',
+                              arguments: {
+                                'watchlist': updated,
+                                'onRemove': onRemove,
+                                'onTapDetail': onTapDetail,
+                              },
+                            );
+                          }
                         }
                       },
                     ),
