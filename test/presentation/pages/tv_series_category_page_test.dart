@@ -15,16 +15,27 @@ void main() {
       mockCubit = MockTvSeriesListCubit();
     });
 
-    testWidgets('menampilkan daftar tv series kategori', (WidgetTester tester) async {
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [
-        // Tambahkan entitas TV Series dummy sesuai kebutuhan
-      ], topRated: [], nowPlaying: []));
+    testWidgets('menampilkan daftar tv series kategori', (
+      WidgetTester tester,
+    ) async {
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(
+          popular: [
+            // Tambahkan entitas TV Series dummy sesuai kebutuhan
+          ],
+          topRated: [],
+          nowPlaying: [],
+        ),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
         MaterialApp(
           home: BlocProvider<TvSeriesListCubit>.value(
             value: mockCubit,
-            child: const TvSeriesCategoryPage(title: 'Popular', tvSeriesList: []),
+            child: const TvSeriesCategoryPage(
+              title: 'Popular',
+              tvSeriesList: [],
+            ),
           ),
         ),
       );
@@ -43,7 +54,9 @@ void main() {
             child: Builder(
               builder: (context) {
                 // Simulasikan error dengan menampilkan widget error manual
-                return const Scaffold(body: Center(child: Text('Error kategori')));
+                return const Scaffold(
+                  body: Center(child: Text('Error kategori')),
+                );
               },
             ),
           ),
@@ -53,30 +66,41 @@ void main() {
       expect(find.text('Error kategori'), findsOneWidget);
     });
 
-    testWidgets('menampilkan icon jika posterPath kosong', (WidgetTester tester) async {
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [
-        TvSeries(
-          id: 1,
-          name: 'No Poster TV',
-          overview: 'No poster',
-          posterPath: '',
-          voteAverage: 7.0,
+    testWidgets('menampilkan icon jika posterPath kosong', (
+      WidgetTester tester,
+    ) async {
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(
+          popular: [
+            TvSeries(
+              id: 1,
+              name: 'No Poster TV',
+              overview: 'No poster',
+              posterPath: '',
+              voteAverage: 7.0,
+            ),
+          ],
+          topRated: [],
+          nowPlaying: [],
         ),
-      ], topRated: [], nowPlaying: []));
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
         MaterialApp(
           home: BlocProvider<TvSeriesListCubit>.value(
             value: mockCubit,
-            child: const TvSeriesCategoryPage(title: 'Popular', tvSeriesList: [
-              TvSeries(
-                id: 1,
-                name: 'No Poster TV',
-                overview: 'No poster',
-                posterPath: '',
-                voteAverage: 7.0,
-              ),
-            ]),
+            child: const TvSeriesCategoryPage(
+              title: 'Popular',
+              tvSeriesList: [
+                TvSeries(
+                  id: 1,
+                  name: 'No Poster TV',
+                  overview: 'No poster',
+                  posterPath: '',
+                  voteAverage: 7.0,
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -85,56 +109,100 @@ void main() {
       expect(find.text('No Poster TV'), findsOneWidget);
     });
 
-    testWidgets('tap item TV dengan posterPath kosong navigasi ke detail page', (WidgetTester tester) async {
-      final tvList = [
-        TvSeries(id: 1, name: 'Kategori TV', overview: 'desc', posterPath: '', voteAverage: 7.5),
-      ];
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []));
-      when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      when(mockCubit.getDetail(any)).thenAnswer((_) async => tvList[0]);
-      when(mockCubit.getRecommendations(any)).thenAnswer((_) async => tvList);
-      await tester.pumpWidget(
-        MaterialApp(
-          routes: {
-            '/detail': (context) => const Scaffold(body: Text('Detail Page')),
-          },
-          home: BlocProvider<TvSeriesListCubit>.value(
-            value: mockCubit,
-            child: TvSeriesCategoryPage(title: 'Popular', tvSeriesList: tvList),
+    testWidgets(
+      'tap item TV dengan posterPath kosong navigasi ke detail page',
+      (WidgetTester tester) async {
+        final tvList = [
+          TvSeries(
+            id: 1,
+            name: 'Kategori TV',
+            overview: 'desc',
+            posterPath: '',
+            voteAverage: 7.5,
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      final tvItem = find.text('Kategori TV').first;
-      await tester.tap(tvItem);
-      await tester.pumpAndSettle();
-      expect(find.text('Detail Page'), findsOneWidget);
-    });
-
-    testWidgets('menampilkan subtitle rating pada item dengan posterPath kosong', (WidgetTester tester) async {
-      final tvList = [
-        TvSeries(id: 2, name: 'Rated TV', overview: 'desc', posterPath: '', voteAverage: 8.5),
-      ];
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []));
-      when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      await tester.pumpWidget(
-        MaterialApp(
-          home: BlocProvider<TvSeriesListCubit>.value(
-            value: mockCubit,
-            child: TvSeriesCategoryPage(title: 'Popular', tvSeriesList: tvList),
+        ];
+        when(mockCubit.state).thenReturn(
+          TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []),
+        );
+        when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+        when(mockCubit.getDetail(any)).thenAnswer((_) async => tvList[0]);
+        when(mockCubit.getRecommendations(any)).thenAnswer((_) async => tvList);
+        await tester.pumpWidget(
+          MaterialApp(
+            routes: {
+              '/detail': (context) => const Scaffold(body: Text('Detail Page')),
+            },
+            home: BlocProvider<TvSeriesListCubit>.value(
+              value: mockCubit,
+              child: TvSeriesCategoryPage(
+                title: 'Popular',
+                tvSeriesList: tvList,
+              ),
+            ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(find.textContaining('Rating: 8.5'), findsOneWidget);
-    });
+        );
+        await tester.pumpAndSettle();
+        final tvItem = find.text('Kategori TV').first;
+        await tester.tap(tvItem);
+        await tester.pumpAndSettle();
+        expect(find.text('Detail Page'), findsOneWidget);
+      },
+    );
 
-    testWidgets('menampilkan lebih dari satu item di kategori', (WidgetTester tester) async {
+    testWidgets(
+      'menampilkan subtitle rating pada item dengan posterPath kosong',
+      (WidgetTester tester) async {
+        final tvList = [
+          TvSeries(
+            id: 2,
+            name: 'Rated TV',
+            overview: 'desc',
+            posterPath: '',
+            voteAverage: 8.5,
+          ),
+        ];
+        when(mockCubit.state).thenReturn(
+          TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []),
+        );
+        when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+        await tester.pumpWidget(
+          MaterialApp(
+            home: BlocProvider<TvSeriesListCubit>.value(
+              value: mockCubit,
+              child: TvSeriesCategoryPage(
+                title: 'Popular',
+                tvSeriesList: tvList,
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.textContaining('Rating: 8.5'), findsOneWidget);
+      },
+    );
+
+    testWidgets('menampilkan lebih dari satu item di kategori', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 1, name: 'TV 1', overview: 'desc', posterPath: '', voteAverage: 7.0),
-        TvSeries(id: 2, name: 'TV 2', overview: 'desc', posterPath: '', voteAverage: 8.0),
+        TvSeries(
+          id: 1,
+          name: 'TV 1',
+          overview: 'desc',
+          posterPath: '',
+          voteAverage: 7.0,
+        ),
+        TvSeries(
+          id: 2,
+          name: 'TV 2',
+          overview: 'desc',
+          posterPath: '',
+          voteAverage: 8.0,
+        ),
       ];
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
         MaterialApp(

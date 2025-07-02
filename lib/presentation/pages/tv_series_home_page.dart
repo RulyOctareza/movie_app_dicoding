@@ -27,7 +27,6 @@ class TvSeriesHomePage extends StatelessWidget {
                   arguments: {
                     'watchlist': watchlist,
                     'onRemove': (int id) async {
-                
                       await cubit.removeFromWatchlist(id);
                     },
                     'onTapDetail': (int id) async {
@@ -63,9 +62,19 @@ class TvSeriesHomePage extends StatelessWidget {
             return ListView(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
               children: [
-                _buildSection(context, 'Now Playing', state.nowPlaying, '/category'),
+                _buildSection(
+                  context,
+                  'Now Playing',
+                  state.nowPlaying,
+                  '/category',
+                ),
                 _buildSection(context, 'Popular', state.popular, '/category'),
-                _buildSection(context, 'Top Rated', state.topRated, '/category'),
+                _buildSection(
+                  context,
+                  'Top Rated',
+                  state.topRated,
+                  '/category',
+                ),
               ],
             );
           } else if (state is TvSeriesListError) {
@@ -81,7 +90,12 @@ class TvSeriesHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildSection(BuildContext context, String title, List items, String route) {
+  Widget _buildSection(
+    BuildContext context,
+    String title,
+    List items,
+    String route,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -90,15 +104,26 @@ class TvSeriesHomePage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, route, arguments: {
-                    'title': title,
-                    'tvSeriesList': items,
-                  });
+                  Navigator.pushNamed(
+                    context,
+                    route,
+                    arguments: {'title': title, 'tvSeriesList': items},
+                  );
                 },
-                child: const Text('See More', style: TextStyle(color: Colors.yellow)),
+                child: const Text(
+                  'See More',
+                  style: TextStyle(color: Colors.yellow),
+                ),
               ),
             ],
           ),
@@ -138,15 +163,29 @@ class TvSeriesHomePage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ClipRRect(
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(12),
+                          ),
                           child: tv.posterPath.isNotEmpty
-                              ? Image.network('https://image.tmdb.org/t/p/w185${tv.posterPath}', fit: BoxFit.cover)
-                              : const Icon(Icons.tv, size: 80, color: Colors.white),
+                              ? Image.network(
+                                  'https://image.tmdb.org/t/p/w185${tv.posterPath}',
+                                  fit: BoxFit.cover,
+                                )
+                              : const Icon(
+                                  Icons.tv,
+                                  size: 80,
+                                  color: Colors.white,
+                                ),
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(4.0),
-                        child: Text(tv.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(color: Colors.white)),
+                        child: Text(
+                          tv.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   ),

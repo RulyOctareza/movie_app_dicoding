@@ -7,7 +7,8 @@ import 'package:movie_app_dicoding/domain/entities/tv_series_detail.dart';
 import 'package:movie_app_dicoding/domain/entities/season.dart';
 import 'package:movie_app_dicoding/domain/usecases/tv_series_usecases.dart';
 import 'package:movie_app_dicoding/domain/usecases/get_season_episodes.dart';
-import 'package:movie_app_dicoding/presentation/cubit/tv_series_list_state.dart' as tv_state;
+import 'package:movie_app_dicoding/presentation/cubit/tv_series_list_state.dart'
+    as tv_state;
 
 import '../../domain/usecases/tv_series_repository_mock.mocks.dart';
 
@@ -197,7 +198,9 @@ void main() {
   });
 
   test('getRecommendations throws error from repository', () async {
-    when(mockRepo.getTvSeriesRecommendations(999)).thenThrow(Exception('not found'));
+    when(
+      mockRepo.getTvSeriesRecommendations(999),
+    ).thenThrow(Exception('not found'));
     expect(() => cubit.getRecommendations(999), throwsA(isA<Exception>()));
   });
 

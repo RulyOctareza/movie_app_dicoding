@@ -18,17 +18,31 @@ void main() {
 
     testWidgets('menampilkan daftar episode', (WidgetTester tester) async {
       final episodes = [
-        Episode(id: 1, name: 'Episode 1', overview: 'desc', episodeNumber: 1, stillPath: '/ep1.jpg'),
+        Episode(
+          id: 1,
+          name: 'Episode 1',
+          overview: 'desc',
+          episodeNumber: 1,
+          stillPath: '/ep1.jpg',
+        ),
       ];
-      when(mockCubit.getSeasonEpisodes(any, any)).thenAnswer((_) async => episodes);
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+      when(
+        mockCubit.getSeasonEpisodes(any, any),
+      ).thenAnswer((_) async => episodes);
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           MaterialApp(
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
-              child: TvSeriesEpisodeListPage(tvId: 1, seasonNumber: 1, seasonName: 'Season 1'),
+              child: TvSeriesEpisodeListPage(
+                tvId: 1,
+                seasonNumber: 1,
+                seasonName: 'Season 1',
+              ),
             ),
           ),
         );

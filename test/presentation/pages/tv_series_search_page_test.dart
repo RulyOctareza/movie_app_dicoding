@@ -16,7 +16,9 @@ void main() {
     });
 
     testWidgets('menampilkan hasil pencarian', (WidgetTester tester) async {
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
         MaterialApp(
@@ -33,7 +35,9 @@ void main() {
 
     testWidgets('menampilkan error state', (WidgetTester tester) async {
       when(mockCubit.search(any)).thenThrow(Exception('Error test'));
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
         MaterialApp(
@@ -49,17 +53,23 @@ void main() {
       expect(find.textContaining('Exception: Error test'), findsOneWidget);
     });
 
-    testWidgets('menampilkan icon jika posterPath kosong pada hasil search', (WidgetTester tester) async {
-      when(mockCubit.search(any)).thenAnswer((_) async => [
-        TvSeries(
-          id: 1,
-          name: 'No Poster TV',
-          overview: 'No poster',
-          posterPath: '',
-          voteAverage: 7.0,
-        ),
-      ]);
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+    testWidgets('menampilkan icon jika posterPath kosong pada hasil search', (
+      WidgetTester tester,
+    ) async {
+      when(mockCubit.search(any)).thenAnswer(
+        (_) async => [
+          TvSeries(
+            id: 1,
+            name: 'No Poster TV',
+            overview: 'No poster',
+            posterPath: '',
+            voteAverage: 7.0,
+          ),
+        ],
+      );
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
         MaterialApp(
@@ -104,12 +114,16 @@ void main() {
     // });
 
     // Tambahan: test edge case loading
-    testWidgets('menampilkan loading saat search dipanggil', (WidgetTester tester) async {
+    testWidgets('menampilkan loading saat search dipanggil', (
+      WidgetTester tester,
+    ) async {
       when(mockCubit.search(any)).thenAnswer((_) async {
         await Future.delayed(const Duration(milliseconds: 500));
         return [];
       });
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
         MaterialApp(

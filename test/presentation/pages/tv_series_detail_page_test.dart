@@ -12,7 +12,9 @@ import 'package:network_image_mock/network_image_mock.dart';
 import 'tv_series_detail_page_mock.mocks.dart';
 
 void main() {
-  testWidgets('TvSeriesDetailPage renders with correct data', (WidgetTester tester) async {
+  testWidgets('TvSeriesDetailPage renders with correct data', (
+    WidgetTester tester,
+  ) async {
     await mockNetworkImagesFor(() async {
       final detail = TvSeriesDetail(
         id: 1,
@@ -41,10 +43,16 @@ void main() {
         ),
       ];
       final mockCubit = MockTvSeriesListCubit();
-      when(mockCubit.isAddedToWatchlist(any)).thenAnswer((Invocation inv) async => false);
+      when(
+        mockCubit.isAddedToWatchlist(any),
+      ).thenAnswer((Invocation inv) async => false);
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
-      when(mockCubit.getDetail(any)).thenAnswer((Invocation inv) async => detail);
-      when(mockCubit.getRecommendations(any)).thenAnswer((Invocation inv) async => recommendations);
+      when(
+        mockCubit.getDetail(any),
+      ).thenAnswer((Invocation inv) async => detail);
+      when(
+        mockCubit.getRecommendations(any),
+      ).thenAnswer((Invocation inv) async => recommendations);
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       when(mockCubit.state).thenReturn(TvSeriesListInitial());
 
@@ -69,51 +77,58 @@ void main() {
     });
   });
 
-  testWidgets('TvSeriesDetailPage menampilkan empty state jika tidak ada rekomendasi', (WidgetTester tester) async {
-    await mockNetworkImagesFor(() async {
-      final detail = TvSeriesDetail(
-        id: 1,
-        name: 'Test Series',
-        overview: 'Overview',
-        posterPath: '/test.jpg',
-        voteAverage: 8.5,
-        seasons: [
-          Season(
-            id: 1,
-            name: 'Season 1',
-            seasonNumber: 1,
-            episodeCount: 10,
-            overview: 'Season 1 overview',
-            posterPath: '/season1.jpg',
-          ),
-        ],
-      );
-      final recommendations = <TvSeries>[];
-      final mockCubit = MockTvSeriesListCubit();
-      when(mockCubit.isAddedToWatchlist(any)).thenAnswer((_) async => false);
-      when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
-      when(mockCubit.getDetail(any)).thenAnswer((_) async => detail);
-      when(mockCubit.getRecommendations(any)).thenAnswer((_) async => recommendations);
-      when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      when(mockCubit.state).thenReturn(TvSeriesListInitial());
-      await tester.pumpWidget(
-        MaterialApp(
-          home: BlocProvider<TvSeriesListCubit>.value(
-            value: mockCubit,
-            child: TvSeriesDetailPage(
-              detail: detail,
-              recommendations: recommendations,
+  testWidgets(
+    'TvSeriesDetailPage menampilkan empty state jika tidak ada rekomendasi',
+    (WidgetTester tester) async {
+      await mockNetworkImagesFor(() async {
+        final detail = TvSeriesDetail(
+          id: 1,
+          name: 'Test Series',
+          overview: 'Overview',
+          posterPath: '/test.jpg',
+          voteAverage: 8.5,
+          seasons: [
+            Season(
+              id: 1,
+              name: 'Season 1',
+              seasonNumber: 1,
+              episodeCount: 10,
+              overview: 'Season 1 overview',
+              posterPath: '/season1.jpg',
+            ),
+          ],
+        );
+        final recommendations = <TvSeries>[];
+        final mockCubit = MockTvSeriesListCubit();
+        when(mockCubit.isAddedToWatchlist(any)).thenAnswer((_) async => false);
+        when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
+        when(mockCubit.getDetail(any)).thenAnswer((_) async => detail);
+        when(
+          mockCubit.getRecommendations(any),
+        ).thenAnswer((_) async => recommendations);
+        when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+        when(mockCubit.state).thenReturn(TvSeriesListInitial());
+        await tester.pumpWidget(
+          MaterialApp(
+            home: BlocProvider<TvSeriesListCubit>.value(
+              value: mockCubit,
+              child: TvSeriesDetailPage(
+                detail: detail,
+                recommendations: recommendations,
+              ),
             ),
           ),
-        ),
-      );
-      expect(find.text('Recommendations'), findsOneWidget);
-      expect(find.text('Recommended Series'), findsNothing);
-      // Cek widget empty state rekomendasi jika ada
-    });
-  });
+        );
+        expect(find.text('Recommendations'), findsOneWidget);
+        expect(find.text('Recommended Series'), findsNothing);
+        // Cek widget empty state rekomendasi jika ada
+      });
+    },
+  );
 
-  testWidgets('TvSeriesDetailPage menampilkan rating dan overview', (WidgetTester tester) async {
+  testWidgets('TvSeriesDetailPage menampilkan rating dan overview', (
+    WidgetTester tester,
+  ) async {
     await mockNetworkImagesFor(() async {
       final detail = TvSeriesDetail(
         id: 1,
@@ -128,7 +143,9 @@ void main() {
       when(mockCubit.isAddedToWatchlist(any)).thenAnswer((_) async => false);
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
       when(mockCubit.getDetail(any)).thenAnswer((_) async => detail);
-      when(mockCubit.getRecommendations(any)).thenAnswer((_) async => recommendations);
+      when(
+        mockCubit.getRecommendations(any),
+      ).thenAnswer((_) async => recommendations);
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       when(mockCubit.state).thenReturn(TvSeriesListInitial());
       await tester.pumpWidget(
@@ -147,7 +164,9 @@ void main() {
     });
   });
 
-  testWidgets('TvSeriesDetailPage menampilkan icon jika posterPath kosong', (WidgetTester tester) async {
+  testWidgets('TvSeriesDetailPage menampilkan icon jika posterPath kosong', (
+    WidgetTester tester,
+  ) async {
     await mockNetworkImagesFor(() async {
       final detail = TvSeriesDetail(
         id: 1,
@@ -162,7 +181,9 @@ void main() {
       when(mockCubit.isAddedToWatchlist(any)).thenAnswer((_) async => false);
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
       when(mockCubit.getDetail(any)).thenAnswer((_) async => detail);
-      when(mockCubit.getRecommendations(any)).thenAnswer((_) async => recommendations);
+      when(
+        mockCubit.getRecommendations(any),
+      ).thenAnswer((_) async => recommendations);
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       when(mockCubit.state).thenReturn(TvSeriesListInitial());
       await tester.pumpWidget(
@@ -182,7 +203,9 @@ void main() {
     });
   });
 
-  testWidgets('TvSeriesDetailPage menampilkan daftar season', (WidgetTester tester) async {
+  testWidgets('TvSeriesDetailPage menampilkan daftar season', (
+    WidgetTester tester,
+  ) async {
     await mockNetworkImagesFor(() async {
       final detail = TvSeriesDetail(
         id: 1,
@@ -214,7 +237,9 @@ void main() {
       when(mockCubit.isAddedToWatchlist(any)).thenAnswer((_) async => false);
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
       when(mockCubit.getDetail(any)).thenAnswer((_) async => detail);
-      when(mockCubit.getRecommendations(any)).thenAnswer((_) async => recommendations);
+      when(
+        mockCubit.getRecommendations(any),
+      ).thenAnswer((_) async => recommendations);
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       when(mockCubit.state).thenReturn(TvSeriesListInitial());
       await tester.pumpWidget(

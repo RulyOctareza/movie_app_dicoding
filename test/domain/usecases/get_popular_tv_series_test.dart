@@ -25,8 +25,9 @@ void main() {
 
   test('should get list of popular tv series from repository', () async {
     // arrange
-    when(mockRepository.getPopularTvSeries())
-        .thenAnswer((_) async => tTvSeriesList);
+    when(
+      mockRepository.getPopularTvSeries(),
+    ).thenAnswer((_) async => tTvSeriesList);
     // act
     final result = await usecase();
     // assert

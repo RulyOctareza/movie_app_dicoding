@@ -31,8 +31,9 @@ void main() {
 
   test('should return popular tv series from remote data source', () async {
     // arrange
-    when(mockRemote.getPopularTvSeries())
-        .thenAnswer((_) async => tTvSeriesModelList);
+    when(
+      mockRemote.getPopularTvSeries(),
+    ).thenAnswer((_) async => tTvSeriesModelList);
     // act
     final result = await repository.getPopularTvSeries();
     // assert

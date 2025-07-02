@@ -18,17 +18,29 @@ void main() {
 
     testWidgets('menampilkan daftar watchlist', (WidgetTester tester) async {
       final tvList = [
-        TvSeries(id: 1, name: 'Watchlist TV', overview: 'desc', posterPath: '/test.jpg', voteAverage: 8.0),
+        TvSeries(
+          id: 1,
+          name: 'Watchlist TV',
+          overview: 'desc',
+          posterPath: '/test.jpg',
+          voteAverage: 8.0,
+        ),
       ];
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => tvList);
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           MaterialApp(
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
-              child: WatchlistPage(watchlist: tvList, onRemove: (_) async {}, onTapDetail: (_) async {}),
+              child: WatchlistPage(
+                watchlist: tvList,
+                onRemove: (_) async {},
+                onTapDetail: (_) async {},
+              ),
             ),
           ),
         );
@@ -36,16 +48,24 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan pesan kosong jika watchlist kosong', (WidgetTester tester) async {
+    testWidgets('menampilkan pesan kosong jika watchlist kosong', (
+      WidgetTester tester,
+    ) async {
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           MaterialApp(
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
-              child: WatchlistPage(watchlist: [], onRemove: (_) async {}, onTapDetail: (_) async {}),
+              child: WatchlistPage(
+                watchlist: [],
+                onRemove: (_) async {},
+                onTapDetail: (_) async {},
+              ),
             ),
           ),
         );
@@ -53,19 +73,33 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan icon jika posterPath kosong pada watchlist', (WidgetTester tester) async {
+    testWidgets('menampilkan icon jika posterPath kosong pada watchlist', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 2, name: 'No Poster TV', overview: 'desc', posterPath: '', voteAverage: 7.0),
+        TvSeries(
+          id: 2,
+          name: 'No Poster TV',
+          overview: 'desc',
+          posterPath: '',
+          voteAverage: 7.0,
+        ),
       ];
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => tvList);
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           MaterialApp(
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
-              child: WatchlistPage(watchlist: tvList, onRemove: (_) async {}, onTapDetail: (_) async {}),
+              child: WatchlistPage(
+                watchlist: tvList,
+                onRemove: (_) async {},
+                onTapDetail: (_) async {},
+              ),
             ),
           ),
         );
@@ -74,40 +108,75 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan subtitle rating pada item dengan posterPath kosong', (WidgetTester tester) async {
-      final tvList = [
-        TvSeries(id: 3, name: 'Rated TV', overview: 'desc', posterPath: '', voteAverage: 8.5),
-      ];
-      when(mockCubit.getWatchlistList()).thenAnswer((_) async => tvList);
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
-      when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
-      await mockNetworkImagesFor(() async {
-        await tester.pumpWidget(
-          MaterialApp(
-            home: BlocProvider<TvSeriesListCubit>.value(
-              value: mockCubit,
-              child: WatchlistPage(watchlist: tvList, onRemove: (_) async {}, onTapDetail: (_) async {}),
-            ),
+    testWidgets(
+      'menampilkan subtitle rating pada item dengan posterPath kosong',
+      (WidgetTester tester) async {
+        final tvList = [
+          TvSeries(
+            id: 3,
+            name: 'Rated TV',
+            overview: 'desc',
+            posterPath: '',
+            voteAverage: 8.5,
           ),
+        ];
+        when(mockCubit.getWatchlistList()).thenAnswer((_) async => tvList);
+        when(mockCubit.state).thenReturn(
+          TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
         );
-        expect(find.textContaining('Rating: 8.5'), findsOneWidget);
-      });
-    });
+        when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+        await mockNetworkImagesFor(() async {
+          await tester.pumpWidget(
+            MaterialApp(
+              home: BlocProvider<TvSeriesListCubit>.value(
+                value: mockCubit,
+                child: WatchlistPage(
+                  watchlist: tvList,
+                  onRemove: (_) async {},
+                  onTapDetail: (_) async {},
+                ),
+              ),
+            ),
+          );
+          expect(find.textContaining('Rating: 8.5'), findsOneWidget);
+        });
+      },
+    );
 
-    testWidgets('menampilkan lebih dari satu item di watchlist', (WidgetTester tester) async {
+    testWidgets('menampilkan lebih dari satu item di watchlist', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 1, name: 'TV 1', overview: 'desc', posterPath: '', voteAverage: 7.0),
-        TvSeries(id: 2, name: 'TV 2', overview: 'desc', posterPath: '', voteAverage: 8.0),
+        TvSeries(
+          id: 1,
+          name: 'TV 1',
+          overview: 'desc',
+          posterPath: '',
+          voteAverage: 7.0,
+        ),
+        TvSeries(
+          id: 2,
+          name: 'TV 2',
+          overview: 'desc',
+          posterPath: '',
+          voteAverage: 8.0,
+        ),
       ];
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => tvList);
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           MaterialApp(
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
-              child: WatchlistPage(watchlist: tvList, onRemove: (_) async {}, onTapDetail: (_) async {}),
+              child: WatchlistPage(
+                watchlist: tvList,
+                onRemove: (_) async {},
+                onTapDetail: (_) async {},
+              ),
             ),
           ),
         );

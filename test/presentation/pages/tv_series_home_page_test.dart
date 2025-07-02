@@ -16,7 +16,9 @@ void main() {
       mockCubit = MockTvSeriesListCubit();
     });
 
-    testWidgets('menampilkan loading saat state loading', (WidgetTester tester) async {
+    testWidgets('menampilkan loading saat state loading', (
+      WidgetTester tester,
+    ) async {
       when(mockCubit.state).thenReturn(TvSeriesListLoading());
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -32,11 +34,25 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan daftar kategori saat state loaded', (WidgetTester tester) async {
+    testWidgets('menampilkan daftar kategori saat state loaded', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 1, name: 'Test TV', overview: 'desc', posterPath: '/test.jpg', voteAverage: 8.0),
+        TvSeries(
+          id: 1,
+          name: 'Test TV',
+          overview: 'desc',
+          posterPath: '/test.jpg',
+          voteAverage: 8.0,
+        ),
       ];
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: tvList, nowPlaying: tvList));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(
+          popular: tvList,
+          topRated: tvList,
+          nowPlaying: tvList,
+        ),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
@@ -55,7 +71,9 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan error message saat state error', (WidgetTester tester) async {
+    testWidgets('menampilkan error message saat state error', (
+      WidgetTester tester,
+    ) async {
       when(mockCubit.state).thenReturn(TvSeriesListError('Error!'));
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -88,8 +106,12 @@ void main() {
     //   });
     // });
 
-    testWidgets('section tetap muncul meski list kategori kosong', (WidgetTester tester) async {
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+    testWidgets('section tetap muncul meski list kategori kosong', (
+      WidgetTester tester,
+    ) async {
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
@@ -106,8 +128,12 @@ void main() {
       });
     });
 
-    testWidgets('floatingActionButton memanggil fetchAll', (WidgetTester tester) async {
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+    testWidgets('floatingActionButton memanggil fetchAll', (
+      WidgetTester tester,
+    ) async {
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
@@ -125,11 +151,25 @@ void main() {
     });
 
     // Tambahan: test navigasi/interaksi ke detail page
-    testWidgets('tap item TV navigasi ke detail page', (WidgetTester tester) async {
+    testWidgets('tap item TV navigasi ke detail page', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 1, name: 'Test TV', overview: 'desc', posterPath: '/test.jpg', voteAverage: 8.0),
+        TvSeries(
+          id: 1,
+          name: 'Test TV',
+          overview: 'desc',
+          posterPath: '/test.jpg',
+          voteAverage: 8.0,
+        ),
       ];
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: tvList, nowPlaying: tvList));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(
+          popular: tvList,
+          topRated: tvList,
+          nowPlaying: tvList,
+        ),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       when(mockCubit.getDetail(any)).thenAnswer((_) async => tvList[0]);
       when(mockCubit.getRecommendations(any)).thenAnswer((_) async => tvList);
@@ -154,17 +194,32 @@ void main() {
     });
 
     // Tambahan: test tap See More navigasi ke kategori
-    testWidgets('tap See More navigasi ke halaman kategori', (WidgetTester tester) async {
+    testWidgets('tap See More navigasi ke halaman kategori', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 1, name: 'Test TV', overview: 'desc', posterPath: '/test.jpg', voteAverage: 8.0),
+        TvSeries(
+          id: 1,
+          name: 'Test TV',
+          overview: 'desc',
+          posterPath: '/test.jpg',
+          voteAverage: 8.0,
+        ),
       ];
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: tvList, nowPlaying: tvList));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(
+          popular: tvList,
+          topRated: tvList,
+          nowPlaying: tvList,
+        ),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           MaterialApp(
             routes: {
-              '/category': (context) => const Scaffold(body: Text('Kategori Page')),
+              '/category': (context) =>
+                  const Scaffold(body: Text('Kategori Page')),
             },
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
@@ -181,8 +236,12 @@ void main() {
     });
 
     // Tambahan: test tap search navigasi ke halaman search
-    testWidgets('tap search navigasi ke halaman search', (WidgetTester tester) async {
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+    testWidgets('tap search navigasi ke halaman search', (
+      WidgetTester tester,
+    ) async {
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
@@ -227,11 +286,25 @@ void main() {
     // });
 
     // Tambahan: test jika user tap item TV tanpa posterPath
-    testWidgets('tap item TV tanpa posterPath tetap navigasi ke detail', (WidgetTester tester) async {
+    testWidgets('tap item TV tanpa posterPath tetap navigasi ke detail', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 2, name: 'No Poster TV', overview: 'desc', posterPath: '', voteAverage: 7.0),
+        TvSeries(
+          id: 2,
+          name: 'No Poster TV',
+          overview: 'desc',
+          posterPath: '',
+          voteAverage: 7.0,
+        ),
       ];
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: tvList, nowPlaying: tvList));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(
+          popular: tvList,
+          topRated: tvList,
+          nowPlaying: tvList,
+        ),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       when(mockCubit.getDetail(any)).thenAnswer((_) async => tvList[0]);
       when(mockCubit.getRecommendations(any)).thenAnswer((_) async => tvList);
@@ -256,14 +329,19 @@ void main() {
     });
 
     // Tambahan: test jika user tap See More pada kategori kosong tetap navigasi
-    testWidgets('tap See More pada kategori kosong tetap navigasi', (WidgetTester tester) async {
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []));
+    testWidgets('tap See More pada kategori kosong tetap navigasi', (
+      WidgetTester tester,
+    ) async {
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           MaterialApp(
             routes: {
-              '/category': (context) => const Scaffold(body: Text('Kategori Page')),
+              '/category': (context) =>
+                  const Scaffold(body: Text('Kategori Page')),
             },
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
@@ -280,11 +358,21 @@ void main() {
     });
 
     // Tambahan: test edge case jika hanya satu kategori yang berisi
-    testWidgets('menampilkan section dengan satu kategori berisi', (WidgetTester tester) async {
+    testWidgets('menampilkan section dengan satu kategori berisi', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 3, name: 'Only Popular', overview: 'desc', posterPath: '/only.jpg', voteAverage: 7.5),
+        TvSeries(
+          id: 3,
+          name: 'Only Popular',
+          overview: 'desc',
+          posterPath: '/only.jpg',
+          voteAverage: 7.5,
+        ),
       ];
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []),
+      );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
@@ -323,15 +411,29 @@ void main() {
     // });
 
     // Tambahan: test rapid state change (loading -> loaded)
-    testWidgets('menampilkan loading lalu loaded saat state berubah', (WidgetTester tester) async {
+    testWidgets('menampilkan loading lalu loaded saat state berubah', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 4, name: 'Rapid TV', overview: 'desc', posterPath: '/rapid.jpg', voteAverage: 8.2),
+        TvSeries(
+          id: 4,
+          name: 'Rapid TV',
+          overview: 'desc',
+          posterPath: '/rapid.jpg',
+          voteAverage: 8.2,
+        ),
       ];
       when(mockCubit.state).thenReturn(TvSeriesListLoading());
-      when(mockCubit.stream).thenAnswer((_) => Stream.fromIterable([
-        TvSeriesListLoading(),
-        TvSeriesListLoaded(popular: tvList, topRated: tvList, nowPlaying: tvList),
-      ]));
+      when(mockCubit.stream).thenAnswer(
+        (_) => Stream.fromIterable([
+          TvSeriesListLoading(),
+          TvSeriesListLoaded(
+            popular: tvList,
+            topRated: tvList,
+            nowPlaying: tvList,
+          ),
+        ]),
+      );
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           MaterialApp(
@@ -348,15 +450,35 @@ void main() {
     });
 
     // Tambahan: test error state setelah loaded
-    testWidgets('menampilkan error setelah loaded jika terjadi error', (WidgetTester tester) async {
+    testWidgets('menampilkan error setelah loaded jika terjadi error', (
+      WidgetTester tester,
+    ) async {
       final tvList = [
-        TvSeries(id: 5, name: 'Error TV', overview: 'desc', posterPath: '/error.jpg', voteAverage: 6.5),
+        TvSeries(
+          id: 5,
+          name: 'Error TV',
+          overview: 'desc',
+          posterPath: '/error.jpg',
+          voteAverage: 6.5,
+        ),
       ];
-      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: tvList, nowPlaying: tvList));
-      when(mockCubit.stream).thenAnswer((_) => Stream.fromIterable([
-        TvSeriesListLoaded(popular: tvList, topRated: tvList, nowPlaying: tvList),
-        TvSeriesListError('Error after loaded!'),
-      ]));
+      when(mockCubit.state).thenReturn(
+        TvSeriesListLoaded(
+          popular: tvList,
+          topRated: tvList,
+          nowPlaying: tvList,
+        ),
+      );
+      when(mockCubit.stream).thenAnswer(
+        (_) => Stream.fromIterable([
+          TvSeriesListLoaded(
+            popular: tvList,
+            topRated: tvList,
+            nowPlaying: tvList,
+          ),
+          TvSeriesListError('Error after loaded!'),
+        ]),
+      );
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           MaterialApp(

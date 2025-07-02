@@ -4,10 +4,7 @@ import '../../domain/entities/episode.dart';
 class TvSeriesEpisodeDetailPage extends StatelessWidget {
   final Episode episode;
 
-  const TvSeriesEpisodeDetailPage({
-    super.key,
-    required this.episode,
-  });
+  const TvSeriesEpisodeDetailPage({super.key, required this.episode});
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +14,7 @@ class TvSeriesEpisodeDetailPage extends StatelessWidget {
         backgroundColor: const Color(0xFF181829),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: Text(
-          episode.name,
-          style: const TextStyle(color: Colors.white),
-        ),
+        title: Text(episode.name, style: const TextStyle(color: Colors.white)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -50,7 +44,9 @@ class TvSeriesEpisodeDetailPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              episode.overview.isNotEmpty ? episode.overview : 'No overview available.',
+              episode.overview.isNotEmpty
+                  ? episode.overview
+                  : 'No overview available.',
               style: const TextStyle(fontSize: 16, color: Colors.white70),
             ),
           ],

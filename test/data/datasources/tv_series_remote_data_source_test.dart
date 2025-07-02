@@ -25,31 +25,38 @@ void main() {
   final tTvSeriesModelList = [tTvSeriesModel];
 
   group('getPopularTvSeries', () {
-    test('should return List<TvSeriesModel> when the response code is 200', () async {
-      // arrange
-      when(mockHttpClient.get(any)).thenAnswer((_) async => http.Response(
-        json.encode({
-          'results': [
-            {
-              'id': 1,
-              'name': 'Test Series',
-              'overview': 'Overview',
-              'poster_path': '/test.jpg',
-              'vote_average': 8.0,
-            }
-          ]
-        }),
-        200,
-      ));
-      // act
-      final result = await dataSource.getPopularTvSeries();
-      // assert
-      expect(result, equals(tTvSeriesModelList));
-    });
+    test(
+      'should return List<TvSeriesModel> when the response code is 200',
+      () async {
+        // arrange
+        when(mockHttpClient.get(any)).thenAnswer(
+          (_) async => http.Response(
+            json.encode({
+              'results': [
+                {
+                  'id': 1,
+                  'name': 'Test Series',
+                  'overview': 'Overview',
+                  'poster_path': '/test.jpg',
+                  'vote_average': 8.0,
+                },
+              ],
+            }),
+            200,
+          ),
+        );
+        // act
+        final result = await dataSource.getPopularTvSeries();
+        // assert
+        expect(result, equals(tTvSeriesModelList));
+      },
+    );
 
     test('should throw Exception when the response code is not 200', () async {
       // arrange
-      when(mockHttpClient.get(any)).thenAnswer((_) async => http.Response('Not Found', 404));
+      when(
+        mockHttpClient.get(any),
+      ).thenAnswer((_) async => http.Response('Not Found', 404));
       // act
       final call = dataSource.getPopularTvSeries();
       // assert

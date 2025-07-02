@@ -7,7 +7,11 @@ class TvSeriesCategoryPage extends StatelessWidget {
   final String title;
   final List<TvSeries> tvSeriesList;
 
-  const TvSeriesCategoryPage({super.key, required this.title, required this.tvSeriesList});
+  const TvSeriesCategoryPage({
+    super.key,
+    required this.title,
+    required this.tvSeriesList,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +37,18 @@ class TvSeriesCategoryPage extends StatelessWidget {
               leading: tv.posterPath.isNotEmpty
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network('https://image.tmdb.org/t/p/w92${tv.posterPath}', width: 50, fit: BoxFit.cover),
+                      child: Image.network(
+                        'https://image.tmdb.org/t/p/w92${tv.posterPath}',
+                        width: 50,
+                        fit: BoxFit.cover,
+                      ),
                     )
                   : const Icon(Icons.tv, color: Colors.white),
               title: Text(tv.name, style: const TextStyle(color: Colors.white)),
-              subtitle: Text('Rating: ${tv.voteAverage}', style: const TextStyle(color: Colors.white70)),
+              subtitle: Text(
+                'Rating: ${tv.voteAverage}',
+                style: const TextStyle(color: Colors.white70),
+              ),
               onTap: () async {
                 final cubit = context.read<TvSeriesListCubit>();
                 final detail = await cubit.getDetail(tv.id);

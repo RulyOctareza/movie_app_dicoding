@@ -72,7 +72,8 @@ class WatchlistPage extends StatelessWidget {
                         await onRemove(tv.id);
                         // Refresh halaman setelah hapus
                         if (currentContext.mounted) {
-                          final cubit = currentContext.read<TvSeriesListCubit>();
+                          final cubit = currentContext
+                              .read<TvSeriesListCubit>();
                           final updated = await cubit.getWatchlistList();
                           if (currentContext.mounted) {
                             Navigator.pop(currentContext);

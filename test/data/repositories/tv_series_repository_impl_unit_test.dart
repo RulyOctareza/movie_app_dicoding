@@ -5,6 +5,7 @@ import 'package:movie_app_dicoding/data/datasources/tv_series_local_data_source.
 import 'package:mockito/mockito.dart';
 
 class MockRemoteDataSource extends Mock implements TvSeriesRemoteDataSource {}
+
 class MockLocalDataSource extends Mock implements TvSeriesLocalDataSource {}
 
 void main() {

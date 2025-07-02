@@ -7,7 +7,9 @@ abstract class TvSeriesListState extends Equatable {
 }
 
 class TvSeriesListInitial extends TvSeriesListState {}
+
 class TvSeriesListLoading extends TvSeriesListState {}
+
 class TvSeriesListLoaded extends TvSeriesListState {
   final List<TvSeries> popular;
   final List<TvSeries> topRated;
@@ -22,6 +24,7 @@ class TvSeriesListLoaded extends TvSeriesListState {
   @override
   List<Object?> get props => [popular, topRated, nowPlaying];
 }
+
 class TvSeriesListError extends TvSeriesListState {
   final String message;
   TvSeriesListError(this.message);
