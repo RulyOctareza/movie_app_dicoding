@@ -77,7 +77,7 @@ class MainApp extends StatelessWidget {
                 removeFromWatchlistUsecase: usecases['removeFromWatchlist'],
                 isAddedToWatchlistUsecase: usecases['isAddedToWatchlist'],
                 getSeasonEpisodesUsecase: usecases['getSeasonEpisodes'],
-              ),
+              )..fetchAll(),
             ),
           ],
           child: MaterialApp(
