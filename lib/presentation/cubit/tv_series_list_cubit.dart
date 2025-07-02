@@ -1,0 +1,77 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:equatable/equatable.dart';
+import '../../domain/entities/tv_series.dart';
+import '../../domain/entities/tv_series_detail.dart';
+import '../../domain/usecases/tv_series_usecases.dart';
+
+part 'tv_series_list_state.dart';
+
+class TvSeriesListCubit extends Cubit<TvSeriesListState> {
+  final GetPopularTvSeries getPopularTvSeries;
+  final GetTopRatedTvSeries getTopRatedTvSeries;
+  final GetNowPlayingTvSeries getNowPlayingTvSeries;
+  final SearchTvSeries searchTvSeries;
+  final GetTvSeriesDetail getTvSeriesDetail;
+  final GetTvSeriesRecommendations getTvSeriesRecommendations;
+  final GetWatchlist getWatchlist;
+  final AddToWatchlist addToWatchlistUsecase;
+  final RemoveFromWatchlist removeFromWatchlistUsecase;
+  final IsAddedToWatchlist isAddedToWatchlistUsecase;
+
+  TvSeriesListCubit({
+    required this.getPopularTvSeries,
+    required this.getTopRatedTvSeries,
+    required this.getNowPlayingTvSeries,
+    required this.searchTvSeries,
+    required this.getTvSeriesDetail,
+    required this.getTvSeriesRecommendations,
+    required this.getWatchlist,
+    required this.addToWatchlistUsecase,
+    required this.removeFromWatchlistUsecase,
+    required this.isAddedToWatchlistUsecase,
+  }) : super(TvSeriesListInitial());
+
+  Future<void> fetchAll() async {
+    emit(TvSeriesListLoading());
+    try {
+      final popular = await getPopularTvSeries();
+      final topRated = await getTopRatedTvSeries();
+      final nowPlaying = await getNowPlayingTvSeries();
+      emit(TvSeriesListLoaded(
+        popular: popular,
+        topRated: topRated,
+        nowPlaying: nowPlaying,
+      ));
+    } catch (e) {
+      emit(TvSeriesListError(e.toString()));
+    }
+  }
+
+  Future<List<TvSeries>> search(String query) async {
+    return await searchTvSeries(query);
+  }
+
+  Future getDetail(int id) async {
+    return await getTvSeriesDetail(id);
+  }
+
+  Future getRecommendations(int id) async {
+    return await getTvSeriesRecommendations(id);
+  }
+
+  Future<List<TvSeries>> getWatchlistList() async {
+    return await getWatchlist();
+  }
+
+  Future<void> addToWatchlist(TvSeriesDetail detail) async {
+    await addToWatchlistUsecase(detail);
+  }
+
+  Future<void> removeFromWatchlist(int id) async {
+    await removeFromWatchlistUsecase(id);
+  }
+
+  Future<bool> isAddedToWatchlist(int id) async {
+    return await isAddedToWatchlistUsecase(id);
+  }
+}
