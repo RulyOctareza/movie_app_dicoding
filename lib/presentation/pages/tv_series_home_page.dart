@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app_dicoding/presentation/cubit/tv_series_list_state.dart';
 import '../cubit/tv_series_list_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,7 +27,8 @@ class TvSeriesHomePage extends StatelessWidget {
                   arguments: {
                     'watchlist': watchlist,
                     'onRemove': (int id) async {
-                      // TODO: remove from watchlist
+                
+                      await cubit.removeFromWatchlist(id);
                     },
                     'onTapDetail': (int id) async {
                       final detail = await cubit.getDetail(id);

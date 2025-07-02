@@ -1,13 +1,15 @@
+import 'package:equatable/equatable.dart';
+
 import '../../domain/entities/tv_series.dart';
 
-class TvSeriesModel {
+class TvSeriesModel extends Equatable {
   final int id;
   final String name;
   final String overview;
   final String posterPath;
   final double voteAverage;
 
-  TvSeriesModel({
+  const TvSeriesModel({
     required this.id,
     required this.name,
     required this.overview,
@@ -44,4 +46,7 @@ class TvSeriesModel {
       voteAverage: voteAverage,
     );
   }
+
+  @override
+  List<Object?> get props => [id, name, overview, posterPath, voteAverage];
 }

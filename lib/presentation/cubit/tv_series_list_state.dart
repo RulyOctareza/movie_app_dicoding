@@ -1,4 +1,5 @@
-part of 'tv_series_list_cubit.dart';
+import 'package:equatable/equatable.dart';
+import '../../domain/entities/tv_series.dart';
 
 abstract class TvSeriesListState extends Equatable {
   @override
@@ -27,4 +28,3 @@ class TvSeriesListError extends TvSeriesListState {
   @override
   List<Object?> get props => [message];
 }
- 

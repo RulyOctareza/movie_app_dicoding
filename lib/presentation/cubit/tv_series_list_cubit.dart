@@ -1,12 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
 import '../../domain/entities/tv_series.dart';
 import '../../domain/entities/tv_series_detail.dart';
 import '../../domain/usecases/tv_series_usecases.dart';
 import '../../domain/entities/episode.dart';
 import '../../domain/usecases/get_season_episodes.dart';
-
-part 'tv_series_list_state.dart';
+import 'tv_series_list_state.dart';
 
 class TvSeriesListCubit extends Cubit<TvSeriesListState> {
   final GetPopularTvSeries getPopularTvSeries;
