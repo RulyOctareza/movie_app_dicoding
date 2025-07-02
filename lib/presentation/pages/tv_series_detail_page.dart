@@ -232,30 +232,46 @@ class _TvSeriesDetailPageState extends State<TvSeriesDetailPage> {
               ),
             ),
             ...widget.detail.seasons.map(
-              (season) => ListTile(
-                tileColor: const Color(0xFF232441),
-                title: Text(
-                  season.name,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                subtitle: Text(
-                  'Episodes: ${season.episodeCount}',
-                  style: const TextStyle(color: Colors.white70),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => TvSeriesEpisodeListPage(
-                        tvId: widget.detail.id,
-                        seasonNumber: season.seasonNumber,
-                        seasonName: season.name,
-                      ),
+              (season) => Column(
+                children: [
+                  ListTile(
+                    tileColor: const Color(0xFF232441),
+                    title: Text(
+                      season.name,
+                      style: const TextStyle(color: Colors.white),
                     ),
-                  );
-                },
+                    subtitle: Text(
+                      'Episodes: ${season.episodeCount}',
+                      style: const TextStyle(color: Colors.white70),
+                    ),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      color: Colors.white70,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TvSeriesEpisodeListPage(
+                            tvId: widget.detail.id,
+                            seasonNumber: season.seasonNumber,
+                            seasonName: season.name,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const Divider(
+                    color: Colors.white24,
+                    height: 1,
+                    thickness: 1,
+                    indent: 16,
+                    endIndent: 16,
+                  ),
+                ],
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,

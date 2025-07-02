@@ -19,11 +19,17 @@ class TvSeriesEpisodeListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF181829),
       appBar: AppBar(
-        title: Text(seasonName),
+        backgroundColor: const Color(0xFF181829),
+        title: Text(seasonName, style: const TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: FutureBuilder<List<Episode>>(
-        future: context.read<TvSeriesListCubit>().getSeasonEpisodes(tvId, seasonNumber),
+        future: context.read<TvSeriesListCubit>().getSeasonEpisodes(
+          tvId,
+          seasonNumber,
+        ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -41,19 +47,30 @@ class TvSeriesEpisodeListPage extends StatelessWidget {
               final episode = episodes[index];
               return ListTile(
                 leading: episode.stillPath.isNotEmpty
-                    ? Image.network(
-                        'https://image.tmdb.org/t/p/w185${episode.stillPath}',
-                        width: 80,
-                        fit: BoxFit.cover,
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          'https://image.tmdb.org/t/p/w185${episode.stillPath}',
+                          width: 80,
+                          fit: BoxFit.cover,
+                        ),
                       )
-                    : const Icon(Icons.tv),
-                title: Text(episode.name),
-                subtitle: Text('Episode ${episode.episodeNumber}'),
+                    : const Icon(Icons.tv, color: Colors.white),
+                title: Text(
+                  episode.name,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(
+                  'Episode ${episode.episodeNumber}',
+                  style: const TextStyle(color: Colors.white70),
+                ),
+                tileColor: const Color(0xFF232441),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => TvSeriesEpisodeDetailPage(episode: episode),
+                      builder: (_) =>
+                          TvSeriesEpisodeDetailPage(episode: episode),
                     ),
                   );
                 },
