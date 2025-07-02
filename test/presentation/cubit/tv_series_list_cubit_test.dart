@@ -93,6 +93,26 @@ void main() {
     ],
   );
 
+  blocTest<TvSeriesListCubit, tv_state.TvSeriesListState>(
+    'emits [Loading, Loaded] when fetchAll returns empty lists',
+    build: () {
+      when(mockRepo.getPopularTvSeries()).thenAnswer((_) async => []);
+      when(mockRepo.getTopRatedTvSeries()).thenAnswer((_) async => []);
+      when(mockRepo.getNowPlayingTvSeries()).thenAnswer((_) async => []);
+      return cubit;
+    },
+    act: (cubit) => cubit.fetchAll(),
+    expect: () => [
+      isA<tv_state.TvSeriesListLoading>(),
+      isA<tv_state.TvSeriesListLoaded>(),
+    ],
+    verify: (cubit) {
+      verify(mockRepo.getPopularTvSeries()).called(1);
+      verify(mockRepo.getTopRatedTvSeries()).called(1);
+      verify(mockRepo.getNowPlayingTvSeries()).called(1);
+    },
+  );
+
   test('search returns list from repository', () async {
     when(mockRepo.searchTvSeries('query')).thenAnswer((_) async => tList);
     final result = await cubit.search('query');
@@ -143,13 +163,13 @@ void main() {
       voteAverage: 8.0,
       seasons: [],
     );
-    when(mockRepo.addToWatchlist(detail)).thenAnswer((_) async => null);
+    when(mockRepo.addToWatchlist(detail)).thenAnswer((_) async {});
     await cubit.addToWatchlist(detail);
     verify(mockRepo.addToWatchlist(detail)).called(1);
   });
 
   test('removeFromWatchlist calls repository', () async {
-    when(mockRepo.removeFromWatchlist(1)).thenAnswer((_) async => null);
+    when(mockRepo.removeFromWatchlist(1)).thenAnswer((_) async {});
     await cubit.removeFromWatchlist(1);
     verify(mockRepo.removeFromWatchlist(1)).called(1);
   });
@@ -164,5 +184,53 @@ void main() {
     when(mockRepo.getSeasonEpisodes(1, 1)).thenAnswer((_) async => []);
     final result = await cubit.getSeasonEpisodes(1, 1);
     expect(result, []);
+  });
+
+  test('search throws error from repository', () async {
+    when(mockRepo.searchTvSeries('error')).thenThrow(Exception('search error'));
+    expect(() => cubit.search('error'), throwsA(isA<Exception>()));
+  });
+
+  test('getDetail throws error from repository', () async {
+    when(mockRepo.getTvSeriesDetail(999)).thenThrow(Exception('not found'));
+    expect(() => cubit.getDetail(999), throwsA(isA<Exception>()));
+  });
+
+  test('getRecommendations throws error from repository', () async {
+    when(mockRepo.getTvSeriesRecommendations(999)).thenThrow(Exception('not found'));
+    expect(() => cubit.getRecommendations(999), throwsA(isA<Exception>()));
+  });
+
+  test('getWatchlistList throws error from repository', () async {
+    when(mockRepo.getWatchlist()).thenThrow(Exception('db error'));
+    expect(() => cubit.getWatchlistList(), throwsA(isA<Exception>()));
+  });
+
+  test('addToWatchlist throws error from repository', () async {
+    final detail = TvSeriesDetail(
+      id: 1,
+      name: 'Test Series',
+      overview: 'Overview',
+      posterPath: '/test.jpg',
+      voteAverage: 8.0,
+      seasons: [],
+    );
+    when(mockRepo.addToWatchlist(detail)).thenThrow(Exception('add error'));
+    expect(() => cubit.addToWatchlist(detail), throwsA(isA<Exception>()));
+  });
+
+  test('removeFromWatchlist throws error from repository', () async {
+    when(mockRepo.removeFromWatchlist(1)).thenThrow(Exception('remove error'));
+    expect(() => cubit.removeFromWatchlist(1), throwsA(isA<Exception>()));
+  });
+
+  test('isAddedToWatchlist throws error from repository', () async {
+    when(mockRepo.isAddedToWatchlist(1)).thenThrow(Exception('check error'));
+    expect(() => cubit.isAddedToWatchlist(1), throwsA(isA<Exception>()));
+  });
+
+  test('getSeasonEpisodes throws error from repository', () async {
+    when(mockRepo.getSeasonEpisodes(1, 1)).thenThrow(Exception('season error'));
+    expect(() => cubit.getSeasonEpisodes(1, 1), throwsA(isA<Exception>()));
   });
 }

@@ -85,6 +85,13 @@ DA:51,6
 LF:24
 LH:24
 end_of_record
+SF:lib/domain/entities/tv_series.dart
+DA:11,10
+DA:19,3
+DA:20,18
+LF:3
+LH:3
+end_of_record
 SF:lib/data/models/season_model.dart
 DA:11,1
 DA:20,1
@@ -123,13 +130,6 @@ SF:lib/domain/entities/tv_series_detail.dart
 DA:11,2
 LF:1
 LH:1
-end_of_record
-SF:lib/domain/entities/tv_series.dart
-DA:11,10
-DA:19,3
-DA:20,18
-LF:3
-LH:3
 end_of_record
 SF:lib/data/datasources/tv_series_remote_data_source.dart
 DA:22,2
