@@ -85,6 +85,70 @@ void main() {
       expect(find.text('No Poster TV'), findsOneWidget);
     });
 
+    testWidgets('tap item TV dengan posterPath kosong navigasi ke detail page', (WidgetTester tester) async {
+      final tvList = [
+        TvSeries(id: 1, name: 'Kategori TV', overview: 'desc', posterPath: '', voteAverage: 7.5),
+      ];
+      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []));
+      when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+      when(mockCubit.getDetail(any)).thenAnswer((_) async => tvList[0]);
+      when(mockCubit.getRecommendations(any)).thenAnswer((_) async => tvList);
+      await tester.pumpWidget(
+        MaterialApp(
+          routes: {
+            '/detail': (context) => const Scaffold(body: Text('Detail Page')),
+          },
+          home: BlocProvider<TvSeriesListCubit>.value(
+            value: mockCubit,
+            child: TvSeriesCategoryPage(title: 'Popular', tvSeriesList: tvList),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      final tvItem = find.text('Kategori TV').first;
+      await tester.tap(tvItem);
+      await tester.pumpAndSettle();
+      expect(find.text('Detail Page'), findsOneWidget);
+    });
+
+    testWidgets('menampilkan subtitle rating pada item dengan posterPath kosong', (WidgetTester tester) async {
+      final tvList = [
+        TvSeries(id: 2, name: 'Rated TV', overview: 'desc', posterPath: '', voteAverage: 8.5),
+      ];
+      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []));
+      when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BlocProvider<TvSeriesListCubit>.value(
+            value: mockCubit,
+            child: TvSeriesCategoryPage(title: 'Popular', tvSeriesList: tvList),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Rating: 8.5'), findsOneWidget);
+    });
+
+    testWidgets('menampilkan lebih dari satu item di kategori', (WidgetTester tester) async {
+      final tvList = [
+        TvSeries(id: 1, name: 'TV 1', overview: 'desc', posterPath: '', voteAverage: 7.0),
+        TvSeries(id: 2, name: 'TV 2', overview: 'desc', posterPath: '', voteAverage: 8.0),
+      ];
+      when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []));
+      when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
+      await tester.pumpWidget(
+        MaterialApp(
+          home: BlocProvider<TvSeriesListCubit>.value(
+            value: mockCubit,
+            child: TvSeriesCategoryPage(title: 'Popular', tvSeriesList: tvList),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('TV 1'), findsOneWidget);
+      expect(find.text('TV 2'), findsOneWidget);
+    });
+
     // test ini gagal karena ListTile + Image.network menyebabkan error layout dan network image pada widget test
     // testWidgets('menampilkan subtitle rating', (WidgetTester tester) async {
     //   when(mockCubit.state).thenReturn(TvSeriesListLoaded(popular: [

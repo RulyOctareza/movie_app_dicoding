@@ -31,13 +31,13 @@
             <td class="headerValue">lcov.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntryLo">61.5&nbsp;%</td>
+            <td class="headerCovTableEntryMed">88.5&nbsp;%</td>
             <td class="headerCovTableEntry">26</td>
-            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">23</td>
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-07-02 15:40:20</td>
+            <td class="headerValue">2025-07-02 18:05:18</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntryHi">-</td>
@@ -69,7 +69,7 @@
 <span id="L7"><span class="lineNum">       7</span>              :   final String title;</span>
 <span id="L8"><span class="lineNum">       8</span>              :   final List&lt;TvSeries&gt; tvSeriesList;</span>
 <span id="L9"><span class="lineNum">       9</span>              : </span>
-<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC">           1 :   const TvSeriesCategoryPage({super.key, required this.title, required this.tvSeriesList});</span></span>
+<span id="L10"><span class="lineNum">      10</span> <span class="tlaGNC">           2 :   const TvSeriesCategoryPage({super.key, required this.title, required this.tvSeriesList});</span></span>
 <span id="L11"><span class="lineNum">      11</span>              : </span>
 <span id="L12"><span class="lineNum">      12</span> <span class="tlaGNC">           1 :   @override</span></span>
 <span id="L13"><span class="lineNum">      13</span>              :   Widget build(BuildContext context) {</span>
@@ -100,15 +100,15 @@
 <span id="L38"><span class="lineNum">      38</span>              :                   : const Icon(Icons.tv, color: Colors.white),</span>
 <span id="L39"><span class="lineNum">      39</span> <span class="tlaGNC">           2 :               title: Text(tv.name, style: const TextStyle(color: Colors.white)),</span></span>
 <span id="L40"><span class="lineNum">      40</span> <span class="tlaGNC">           3 :               subtitle: Text('Rating: ${tv.voteAverage}', style: const TextStyle(color: Colors.white70)),</span></span>
-<span id="L41"><span class="lineNum">      41</span> <span class="tlaUNC">           0 :               onTap: () async {</span></span>
-<span id="L42"><span class="lineNum">      42</span> <span class="tlaUNC">           0 :                 final cubit = context.read&lt;TvSeriesListCubit&gt;();</span></span>
-<span id="L43"><span class="lineNum">      43</span> <span class="tlaUNC">           0 :                 final detail = await cubit.getDetail(tv.id);</span></span>
-<span id="L44"><span class="lineNum">      44</span> <span class="tlaUNC">           0 :                 final recommendations = await cubit.getRecommendations(tv.id);</span></span>
-<span id="L45"><span class="lineNum">      45</span> <span class="tlaUNC">           0 :                 if (context.mounted) {</span></span>
-<span id="L46"><span class="lineNum">      46</span> <span class="tlaUNC">           0 :                   Navigator.pushNamed(</span></span>
+<span id="L41"><span class="lineNum">      41</span> <span class="tlaGNC">           1 :               onTap: () async {</span></span>
+<span id="L42"><span class="lineNum">      42</span> <span class="tlaGNC">           1 :                 final cubit = context.read&lt;TvSeriesListCubit&gt;();</span></span>
+<span id="L43"><span class="lineNum">      43</span> <span class="tlaGNC">           2 :                 final detail = await cubit.getDetail(tv.id);</span></span>
+<span id="L44"><span class="lineNum">      44</span> <span class="tlaGNC">           2 :                 final recommendations = await cubit.getRecommendations(tv.id);</span></span>
+<span id="L45"><span class="lineNum">      45</span> <span class="tlaGNC">           1 :                 if (context.mounted) {</span></span>
+<span id="L46"><span class="lineNum">      46</span> <span class="tlaGNC">           1 :                   Navigator.pushNamed(</span></span>
 <span id="L47"><span class="lineNum">      47</span>              :                     context,</span>
 <span id="L48"><span class="lineNum">      48</span>              :                     '/detail',</span>
-<span id="L49"><span class="lineNum">      49</span> <span class="tlaUNC">           0 :                     arguments: {</span></span>
+<span id="L49"><span class="lineNum">      49</span> <span class="tlaGNC">           1 :                     arguments: {</span></span>
 <span id="L50"><span class="lineNum">      50</span>              :                       'detail': detail,</span>
 <span id="L51"><span class="lineNum">      51</span>              :                       'recommendations': recommendations,</span>
 <span id="L52"><span class="lineNum">      52</span>              :                     },</span>
