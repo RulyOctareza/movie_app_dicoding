@@ -3,6 +3,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:movie_app_dicoding/presentation/cubit/tv_series_list_cubit.dart';
 import 'package:movie_app_dicoding/domain/entities/tv_series.dart';
+import 'package:movie_app_dicoding/domain/entities/tv_series_detail.dart';
+import 'package:movie_app_dicoding/domain/entities/season.dart';
 import 'package:movie_app_dicoding/domain/usecases/tv_series_usecases.dart';
 import 'package:movie_app_dicoding/domain/usecases/get_season_episodes.dart';
 import 'package:movie_app_dicoding/presentation/cubit/tv_series_list_state.dart' as tv_state;
@@ -98,7 +100,23 @@ void main() {
   });
 
   test('getDetail returns detail from repository', () async {
-    final detail = Object();
+    final detail = TvSeriesDetail(
+      id: 1,
+      name: 'Test Series',
+      overview: 'Overview',
+      posterPath: '/test.jpg',
+      voteAverage: 8.0,
+      seasons: [
+        Season(
+          id: 1,
+          name: 'Season 1',
+          seasonNumber: 1,
+          episodeCount: 10,
+          overview: 'desc',
+          posterPath: '/season1.jpg',
+        ),
+      ],
+    );
     when(mockRepo.getTvSeriesDetail(1)).thenAnswer((_) async => detail);
     final result = await cubit.getDetail(1);
     expect(result, detail);
@@ -117,9 +135,16 @@ void main() {
   });
 
   test('addToWatchlist calls repository', () async {
-    final detail = Object();
+    final detail = TvSeriesDetail(
+      id: 1,
+      name: 'Test Series',
+      overview: 'Overview',
+      posterPath: '/test.jpg',
+      voteAverage: 8.0,
+      seasons: [],
+    );
     when(mockRepo.addToWatchlist(detail)).thenAnswer((_) async => null);
-    await cubit.addToWatchlist(detail as dynamic);
+    await cubit.addToWatchlist(detail);
     verify(mockRepo.addToWatchlist(detail)).called(1);
   });
 

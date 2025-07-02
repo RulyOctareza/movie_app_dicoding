@@ -32,5 +32,24 @@ void main() {
       final afterRemove = await dataSource.getWatchlist();
       expect(afterRemove, isEmpty);
     });
+
+    test('isAddedToWatchlist returns true if id exists', () async {
+      final tvDetail = TvSeriesDetailModel(
+        id: 2,
+        name: 'Test TV 2',
+        overview: 'desc',
+        posterPath: '/test2.jpg',
+        voteAverage: 7.5,
+        seasons: [],
+      );
+      await dataSource.addToWatchlist(tvDetail);
+      final result = await dataSource.isAddedToWatchlist(2);
+      expect(result, true);
+    });
+
+    test('isAddedToWatchlist returns false if id does not exist', () async {
+      final result = await dataSource.isAddedToWatchlist(999);
+      expect(result, false);
+    });
   });
 }
