@@ -7,6 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'data/datasources/tv_series_local_data_source.dart';
 import 'data/datasources/tv_series_remote_data_source.dart';
 import 'data/repositories/tv_series_repository_impl.dart';
+import 'domain/usecases/get_season_episodes.dart';
 import 'domain/usecases/tv_series_usecases.dart';
 import 'presentation/cubit/tv_series_list_cubit.dart';
 import 'presentation/pages/tv_series_category_page.dart';
@@ -46,6 +47,7 @@ class MainApp extends StatelessWidget {
       'addToWatchlist': AddToWatchlist(repo),
       'removeFromWatchlist': RemoveFromWatchlist(repo),
       'isAddedToWatchlist': IsAddedToWatchlist(repo),
+      'getSeasonEpisodes': GetSeasonEpisodes(repo),
     };
   }
 
@@ -74,6 +76,7 @@ class MainApp extends StatelessWidget {
                 addToWatchlistUsecase: usecases['addToWatchlist'],
                 removeFromWatchlistUsecase: usecases['removeFromWatchlist'],
                 isAddedToWatchlistUsecase: usecases['isAddedToWatchlist'],
+                getSeasonEpisodesUsecase: usecases['getSeasonEpisodes'],
               ),
             ),
           ],

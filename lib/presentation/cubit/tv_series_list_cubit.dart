@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 import '../../domain/entities/tv_series.dart';
 import '../../domain/entities/tv_series_detail.dart';
 import '../../domain/usecases/tv_series_usecases.dart';
+import '../../domain/entities/episode.dart';
+import '../../domain/usecases/get_season_episodes.dart';
 
 part 'tv_series_list_state.dart';
 
@@ -17,6 +19,7 @@ class TvSeriesListCubit extends Cubit<TvSeriesListState> {
   final AddToWatchlist addToWatchlistUsecase;
   final RemoveFromWatchlist removeFromWatchlistUsecase;
   final IsAddedToWatchlist isAddedToWatchlistUsecase;
+  final GetSeasonEpisodes getSeasonEpisodesUsecase;
 
   TvSeriesListCubit({
     required this.getPopularTvSeries,
@@ -29,6 +32,7 @@ class TvSeriesListCubit extends Cubit<TvSeriesListState> {
     required this.addToWatchlistUsecase,
     required this.removeFromWatchlistUsecase,
     required this.isAddedToWatchlistUsecase,
+    required this.getSeasonEpisodesUsecase,
   }) : super(TvSeriesListInitial());
 
   Future<void> fetchAll() async {
@@ -37,11 +41,13 @@ class TvSeriesListCubit extends Cubit<TvSeriesListState> {
       final popular = await getPopularTvSeries();
       final topRated = await getTopRatedTvSeries();
       final nowPlaying = await getNowPlayingTvSeries();
-      emit(TvSeriesListLoaded(
-        popular: popular,
-        topRated: topRated,
-        nowPlaying: nowPlaying,
-      ));
+      emit(
+        TvSeriesListLoaded(
+          popular: popular,
+          topRated: topRated,
+          nowPlaying: nowPlaying,
+        ),
+      );
     } catch (e) {
       emit(TvSeriesListError(e.toString()));
     }
@@ -73,5 +79,9 @@ class TvSeriesListCubit extends Cubit<TvSeriesListState> {
 
   Future<bool> isAddedToWatchlist(int id) async {
     return await isAddedToWatchlistUsecase(id);
+  }
+
+  Future<List<Episode>> getSeasonEpisodes(int tvId, int seasonNumber) async {
+    return await getSeasonEpisodesUsecase(tvId, seasonNumber);
   }
 }

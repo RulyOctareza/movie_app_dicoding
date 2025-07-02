@@ -1,5 +1,6 @@
 import '../entities/tv_series.dart';
 import '../entities/tv_series_detail.dart';
+import '../entities/episode.dart';
 
 abstract class TvSeriesRepository {
   Future<List<TvSeries>> getPopularTvSeries();
@@ -12,4 +13,5 @@ abstract class TvSeriesRepository {
   Future<void> removeFromWatchlist(int id);
   Future<List<TvSeries>> getWatchlist();
   Future<bool> isAddedToWatchlist(int id);
+  Future<List<Episode>> getSeasonEpisodes(int tvId, int seasonNumber);
 }

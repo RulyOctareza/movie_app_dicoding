@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_dicoding/domain/entities/tv_series_detail.dart';
 import 'package:movie_app_dicoding/presentation/cubit/tv_series_list_cubit.dart';
 import '../../domain/entities/tv_series.dart';
+import 'tv_series_episode_list_page.dart';
 
 class TvSeriesDetailPage extends StatefulWidget {
   final TvSeriesDetail detail;
@@ -241,6 +242,18 @@ class _TvSeriesDetailPageState extends State<TvSeriesDetailPage> {
                   'Episodes: ${season.episodeCount}',
                   style: const TextStyle(color: Colors.white70),
                 ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => TvSeriesEpisodeListPage(
+                        tvId: widget.detail.id,
+                        seasonNumber: season.seasonNumber,
+                        seasonName: season.name,
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             Padding(

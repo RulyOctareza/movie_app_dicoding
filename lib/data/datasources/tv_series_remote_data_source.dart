@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/tv_series_model.dart';
 import '../models/tv_series_detail_model.dart';
+import '../models/episode_model.dart';
 
 abstract class TvSeriesRemoteDataSource {
   Future<List<TvSeriesModel>> getPopularTvSeries();
@@ -10,6 +11,7 @@ abstract class TvSeriesRemoteDataSource {
   Future<TvSeriesDetailModel> getTvSeriesDetail(int id);
   Future<List<TvSeriesModel>> getTvSeriesRecommendations(int id);
   Future<List<TvSeriesModel>> searchTvSeries(String query);
+  Future<List<EpisodeModel>> getSeasonEpisodes(int tvId, int seasonNumber);
 }
 
 class TvSeriesRemoteDataSourceImpl implements TvSeriesRemoteDataSource {
@@ -108,6 +110,21 @@ class TvSeriesRemoteDataSourceImpl implements TvSeriesRemoteDataSource {
           .toList();
     } else {
       throw Exception('Failed to search TV series');
+    }
+  }
+
+  @override
+  Future<List<EpisodeModel>> getSeasonEpisodes(int tvId, int seasonNumber) async {
+    final response = await client.get(
+      Uri.parse('$baseUrl/tv/$tvId/season/$seasonNumber?api_key=$apiKey'),
+    );
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return (data['episodes'] as List)
+          .map((e) => EpisodeModel.fromJson(e))
+          .toList();
+    } else {
+      throw Exception('Failed to load episodes');
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:movie_app_dicoding/domain/entities/tv_series.dart';
 import 'package:movie_app_dicoding/domain/entities/tv_series_detail.dart';
+import 'package:movie_app_dicoding/domain/entities/episode.dart';
 import 'package:movie_app_dicoding/domain/repositories/tv_series_repository.dart';
 import '../datasources/tv_series_remote_data_source.dart';
 import '../datasources/tv_series_local_data_source.dart';
@@ -77,5 +78,11 @@ class TvSeriesRepositoryImpl implements TvSeriesRepository {
   @override
   Future<bool> isAddedToWatchlist(int id) async {
     return await localDataSource.isAddedToWatchlist(id);
+  }
+
+  @override
+  Future<List<Episode>> getSeasonEpisodes(int tvId, int seasonNumber) async {
+    final result = await remoteDataSource.getSeasonEpisodes(tvId, seasonNumber);
+    return result.map((e) => e.toEntity()).toList();
   }
 }
