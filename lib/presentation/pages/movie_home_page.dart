@@ -145,19 +145,21 @@ class MovieHomePage extends StatelessWidget {
               return GestureDetector(
                 onTap: () async {
                   final cubit = context.read<MovieListCubit>();
-                  final detail = await cubit.fetchDetail(movie.id);
-                  final recommendations = await cubit.fetchRecommendations(
-                    movie.id,
-                  );
-                  if (context.mounted) {
-                    Navigator.pushNamed(
-                      context,
-                      '/movie_detail',
-                      arguments: {
-                        'detail': detail,
-                        'recommendations': recommendations,
-                      },
-                    );
+                  try {
+                    final detail = await cubit.fetchDetail(movie.id);
+                    final recommendations = await cubit.fetchRecommendations(movie.id);
+                    if (context.mounted) {
+                      Navigator.pushNamed(
+                        context,
+                        '/movie_detail',
+                        arguments: {
+                          'detail': detail,
+                          'recommendations': recommendations,
+                        },
+                      );
+                    }
+                  } catch (e) {
+                    // Handle error if needed
                   }
                 },
                 child: Container(

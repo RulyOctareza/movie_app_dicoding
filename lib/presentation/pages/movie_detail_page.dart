@@ -47,9 +47,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           _loading = false;
         });
       }
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Removed from Watchlist')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Removed from Watchlist')),
+      );
     } else {
       await cubit.addToWatchlistUsecase(widget.detail.id);
       if (mounted) {
@@ -58,9 +58,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           _loading = false;
         });
       }
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Added to Watchlist')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Added to Watchlist')),
+      );
     }
   }
 
@@ -88,8 +88,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child:
-                      detail.posterPath != null && detail.posterPath.isNotEmpty
+                  child: detail.posterPath != null && detail.posterPath.isNotEmpty
                       ? Image.network(
                           'https://image.tmdb.org/t/p/w342${detail.posterPath}',
                           height: 300,
@@ -165,69 +164,76 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 ),
               ),
               const SizedBox(height: 8),
-              SizedBox(
-                height: 180,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: recommendations.length,
-                  itemBuilder: (context, index) {
-                    final rec = recommendations[index];
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacementNamed(
-                          context,
-                          '/movie_detail',
-                          arguments: {
-                            'detail': rec,
-                            'recommendations': recommendations,
-                          },
-                        );
-                      },
-                      child: Container(
-                        width: 120,
-                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF232441),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(12),
+              if (recommendations.isEmpty)
+                const Center(
+                  child: Text(
+                    'No recommendations found',
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                )
+              else
+                SizedBox(
+                  height: 180,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: recommendations.length,
+                    itemBuilder: (context, index) {
+                      final rec = recommendations[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            '/movie_detail',
+                            arguments: {
+                              'detail': rec,
+                              'recommendations': recommendations,
+                            },
+                          );
+                        },
+                        child: Container(
+                          width: 120,
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF232441),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(12),
+                                  ),
+                                  child: rec.posterPath != null &&
+                                          rec.posterPath.isNotEmpty
+                                      ? Image.network(
+                                          'https://image.tmdb.org/t/p/w185${rec.posterPath}',
+                                          fit: BoxFit.cover,
+                                        )
+                                      : const Icon(
+                                          Icons.movie,
+                                          size: 80,
+                                          color: Colors.white,
+                                        ),
                                 ),
-                                child:
-                                    rec.posterPath != null &&
-                                        rec.posterPath.isNotEmpty
-                                    ? Image.network(
-                                        'https://image.tmdb.org/t/p/w185${rec.posterPath}',
-                                        fit: BoxFit.cover,
-                                      )
-                                    : const Icon(
-                                        Icons.movie,
-                                        size: 80,
-                                        color: Colors.white,
-                                      ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text(
-                                rec.title ?? '-',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(color: Colors.white),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  rec.title,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
             ],
           ),
         ),

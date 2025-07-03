@@ -1,7 +1,6 @@
 import '../entities/movie.dart';
 import '../repositories/movie_repository.dart';
 
-// TODO: Implement usecases for Movie (GetPopular, GetTopRated, GetNowPlaying, Search, GetDetail, GetRecommendations, Watchlist, etc)
 
 class GetPopularMovies {
   final MovieRepository repository;
