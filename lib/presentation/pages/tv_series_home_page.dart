@@ -12,8 +12,6 @@ class TvSeriesHomePage extends StatelessWidget {
       backgroundColor: const Color(0xFF181829),
       appBar: AppBar(
         backgroundColor: const Color(0xFF181829),
-        elevation: 0,
-        title: const Text('Ditonton', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
             icon: const Icon(Icons.bookmark, color: Colors.white),

@@ -7,7 +7,10 @@ class MovieRepositoryImpl implements MovieRepository {
   final MovieRemoteDataSource remoteDataSource;
   final MovieLocalDataSource localDataSource;
 
-  MovieRepositoryImpl({required this.remoteDataSource, required this.localDataSource});
+  MovieRepositoryImpl({
+    required this.remoteDataSource,
+    required this.localDataSource,
+  });
 
   @override
   Future<List<Movie>> getNowPlayingMovies() async {

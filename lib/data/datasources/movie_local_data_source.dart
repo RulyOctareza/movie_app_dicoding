@@ -26,7 +26,10 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
     final ids = await getWatchlistIds();
     if (!ids.contains(movieId)) {
       ids.add(movieId);
-      await prefs.setStringList(watchlistKey, ids.map((e) => e.toString()).toList());
+      await prefs.setStringList(
+        watchlistKey,
+        ids.map((e) => e.toString()).toList(),
+      );
     }
   }
 
@@ -34,7 +37,10 @@ class MovieLocalDataSourceImpl implements MovieLocalDataSource {
   Future<void> removeFromWatchlist(int movieId) async {
     final ids = await getWatchlistIds();
     ids.remove(movieId);
-    await prefs.setStringList(watchlistKey, ids.map((e) => e.toString()).toList());
+    await prefs.setStringList(
+      watchlistKey,
+      ids.map((e) => e.toString()).toList(),
+    );
   }
 
   @override

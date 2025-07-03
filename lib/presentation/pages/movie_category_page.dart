@@ -30,13 +30,17 @@ class MovieCategoryPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final movie = movies[index];
                 return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: const Color(0xFF232441),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: ListTile(
-                    leading: movie.posterPath != null && movie.posterPath.isNotEmpty
+                    leading:
+                        movie.posterPath != null && movie.posterPath.isNotEmpty
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.network(
@@ -46,7 +50,10 @@ class MovieCategoryPage extends StatelessWidget {
                             ),
                           )
                         : const Icon(Icons.movie, color: Colors.white),
-                    title: Text(movie.title ?? '-', style: const TextStyle(color: Colors.white)),
+                    title: Text(
+                      movie.title ?? '-',
+                      style: const TextStyle(color: Colors.white),
+                    ),
                     subtitle: Text(
                       'Rating: \\${movie.voteAverage}',
                       style: const TextStyle(color: Colors.white70),

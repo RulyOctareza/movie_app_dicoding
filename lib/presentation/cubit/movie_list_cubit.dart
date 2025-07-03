@@ -36,11 +36,13 @@ class MovieListCubit extends Cubit<MovieListState> {
       final popular = await getPopularMovies();
       final topRated = await getTopRatedMovies();
       final nowPlaying = await getNowPlayingMovies();
-      emit(MovieListLoaded(
-        popular: popular,
-        topRated: topRated,
-        nowPlaying: nowPlaying,
-      ));
+      emit(
+        MovieListLoaded(
+          popular: popular,
+          topRated: topRated,
+          nowPlaying: nowPlaying,
+        ),
+      );
     } catch (e) {
       emit(MovieListError(e.toString()));
     }

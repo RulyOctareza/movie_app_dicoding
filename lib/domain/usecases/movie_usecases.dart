@@ -54,7 +54,8 @@ class AddMovieToWatchlist {
 class RemoveMovieFromWatchlist {
   final MovieRepository repository;
   RemoveMovieFromWatchlist(this.repository);
-  Future<void> call(int movieId) => repository.removeMovieFromWatchlist(movieId);
+  Future<void> call(int movieId) =>
+      repository.removeMovieFromWatchlist(movieId);
 }
 
 class IsMovieAddedToWatchlist {

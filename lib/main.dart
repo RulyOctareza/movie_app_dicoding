@@ -241,12 +241,24 @@ class _MainTabBarPageState extends State<MainTabBarPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Movie & TV Series'),
+        backgroundColor: const Color(0xFF181829),
+        title: const Text('Ditonton', style: TextStyle(color: Colors.white)),
+        iconTheme: const IconThemeData(color: Colors.white),
         bottom: TabBar(
+          indicatorColor: Colors.white,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
           controller: _tabController,
           tabs: const [
-            Tab(text: 'Movies'),
-            Tab(text: 'TV Series'),
+            Tab(
+              text: 'Movies',
+
+              icon: Icon(Icons.movie, color: Colors.white),
+            ),
+            Tab(
+              text: 'TV Series',
+              icon: Icon(Icons.tv, color: Colors.white),
+            ),
           ],
         ),
       ),

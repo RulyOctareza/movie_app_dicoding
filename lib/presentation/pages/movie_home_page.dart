@@ -11,8 +11,6 @@ class MovieHomePage extends StatelessWidget {
       backgroundColor: const Color(0xFF181829),
       appBar: AppBar(
         backgroundColor: const Color(0xFF181829),
-        elevation: 0,
-        title: const Text('Ditonton', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
             icon: const Icon(Icons.bookmark, color: Colors.white),
@@ -61,13 +59,33 @@ class MovieHomePage extends StatelessWidget {
             return ListView(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
               children: [
-                _buildSection(context, 'Now Playing', state.nowPlaying, '/movie_category'),
-                _buildSection(context, 'Popular', state.popular, '/movie_category'),
-                _buildSection(context, 'Top Rated', state.topRated, '/movie_category'),
+                _buildSection(
+                  context,
+                  'Now Playing',
+                  state.nowPlaying,
+                  '/movie_category',
+                ),
+                _buildSection(
+                  context,
+                  'Popular',
+                  state.popular,
+                  '/movie_category',
+                ),
+                _buildSection(
+                  context,
+                  'Top Rated',
+                  state.topRated,
+                  '/movie_category',
+                ),
               ],
             );
           } else if (state is MovieListError) {
-            return Center(child: Text(state.message, style: const TextStyle(color: Colors.white)));
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(color: Colors.white),
+              ),
+            );
           }
           return const SizedBox();
         },
@@ -128,7 +146,9 @@ class MovieHomePage extends StatelessWidget {
                 onTap: () async {
                   final cubit = context.read<MovieListCubit>();
                   final detail = await cubit.fetchDetail(movie.id);
-                  final recommendations = await cubit.fetchRecommendations(movie.id);
+                  final recommendations = await cubit.fetchRecommendations(
+                    movie.id,
+                  );
                   if (context.mounted) {
                     Navigator.pushNamed(
                       context,
