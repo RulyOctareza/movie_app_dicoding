@@ -42,6 +42,10 @@ void main() {
 
   group('MovieSearchPage Widget Test', () {
     testWidgets('menampilkan loading saat search', (WidgetTester tester) async {
+      when(mockRepository.searchMovies('test')).thenAnswer((_) async {
+        await Future.delayed(const Duration(milliseconds: 300));
+        return [testMovie];
+      });
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           BlocProvider.value(
@@ -52,10 +56,10 @@ void main() {
           ),
         );
         await tester.enterText(find.byType(TextField), 'test');
-        // Simulate submit
         await tester.testTextInput.receiveAction(TextInputAction.done);
-        await tester.pump();
+        await tester.pump(); // start async
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        await tester.pump(const Duration(milliseconds: 400)); // finish async
       });
     });
 
