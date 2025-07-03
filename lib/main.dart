@@ -15,6 +15,16 @@ import 'presentation/pages/tv_series_detail_page.dart';
 import 'presentation/pages/tv_series_home_page.dart';
 import 'presentation/pages/tv_series_search_page.dart';
 import 'presentation/pages/watchlist_page.dart';
+import 'presentation/pages/movie_home_page.dart';
+import 'presentation/pages/movie_category_page.dart';
+import 'presentation/pages/movie_detail_page.dart';
+import 'presentation/pages/movie_search_page.dart';
+import 'presentation/pages/movie_watchlist_page.dart';
+import 'data/datasources/movie_remote_data_source.dart';
+import 'data/datasources/movie_local_data_source.dart';
+import 'data/repositories/movie_repository_impl.dart';
+import 'domain/usecases/movie_usecases.dart';
+import 'presentation/cubit/movie_list_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +46,18 @@ class MainApp extends StatelessWidget {
       remoteDataSource: remote,
       localDataSource: local,
     );
+    // Movie dependencies
+    final movieRemote = MovieRemoteDataSourceImpl(
+      client: client,
+      apiKey: apiKey,
+    );
+    final movieLocal = MovieLocalDataSourceImpl(prefs);
+    final movieRepo = MovieRepositoryImpl(
+      remoteDataSource: movieRemote,
+      localDataSource: movieLocal,
+    );
     return {
+      // TV Series usecases
       'getPopular': GetPopularTvSeries(repo),
       'getTopRated': GetTopRatedTvSeries(repo),
       'getNowPlaying': GetNowPlayingTvSeries(repo),
@@ -48,6 +69,17 @@ class MainApp extends StatelessWidget {
       'removeFromWatchlist': RemoveFromWatchlist(repo),
       'isAddedToWatchlist': IsAddedToWatchlist(repo),
       'getSeasonEpisodes': GetSeasonEpisodes(repo),
+      // Movie usecases
+      'getPopularMovie': GetPopularMovies(movieRepo),
+      'getTopRatedMovie': GetTopRatedMovies(movieRepo),
+      'getNowPlayingMovie': GetNowPlayingMovies(movieRepo),
+      'searchMovie': SearchMovies(movieRepo),
+      'getMovieDetail': GetMovieDetail(movieRepo),
+      'getMovieRecommendations': GetMovieRecommendations(movieRepo),
+      'getMovieWatchlist': GetMovieWatchlist(movieRepo),
+      'addMovieToWatchlist': AddMovieToWatchlist(movieRepo),
+      'removeMovieFromWatchlist': RemoveMovieFromWatchlist(movieRepo),
+      'isMovieAddedToWatchlist': IsMovieAddedToWatchlist(movieRepo),
     };
   }
 
@@ -79,15 +111,64 @@ class MainApp extends StatelessWidget {
                 getSeasonEpisodesUsecase: usecases['getSeasonEpisodes'],
               )..fetchAll(),
             ),
+            BlocProvider(
+              create: (_) => MovieListCubit(
+                getPopularMovies: usecases['getPopularMovie'],
+                getTopRatedMovies: usecases['getTopRatedMovie'],
+                getNowPlayingMovies: usecases['getNowPlayingMovie'],
+                searchMovies: usecases['searchMovie'],
+                getMovieDetail: usecases['getMovieDetail'],
+                getMovieRecommendations: usecases['getMovieRecommendations'],
+                getWatchlist: usecases['getMovieWatchlist'],
+                addToWatchlistUsecase: usecases['addMovieToWatchlist'],
+                removeFromWatchlistUsecase:
+                    usecases['removeMovieFromWatchlist'],
+                isAddedToWatchlistUsecase: usecases['isMovieAddedToWatchlist'],
+              )..fetchAll(),
+            ),
           ],
           child: MaterialApp(
-            title: 'TV Series App',
-            initialRoute: '/',
+            title: 'Movie & TV Series App',
+            home: const MainTabBarPage(),
             onGenerateRoute: (settings) {
               switch (settings.name) {
                 case '/':
                   return MaterialPageRoute(
-                    builder: (_) => const TvSeriesHomePage(),
+                    builder: (_) => const MainTabBarPage(),
+                  );
+                case '/movie':
+                  return MaterialPageRoute(
+                    builder: (_) => const MovieHomePage(),
+                  );
+                case '/movie_category':
+                  final args = settings.arguments as Map<String, dynamic>;
+                  return MaterialPageRoute(
+                    builder: (_) => MovieCategoryPage(
+                      title: args['title'],
+                      movies: args['movies'],
+                    ),
+                  );
+                case '/movie_detail':
+                  final args = settings.arguments as Map<String, dynamic>;
+                  return MaterialPageRoute(
+                    builder: (_) => MovieDetailPage(
+                      detail: args['detail'],
+                      recommendations: args['recommendations'],
+                    ),
+                  );
+                case '/movie_search':
+                  return MaterialPageRoute(
+                    builder: (_) => const MovieSearchPage(),
+                  );
+                case '/movie_watchlist':
+                  final args = settings.arguments as Map<String, dynamic>;
+                  return MaterialPageRoute(
+                    builder: (_) => MovieWatchlistPage(
+                      watchlist: args['watchlist'],
+                      onRemove: args['onRemove'] as Future<void> Function(int),
+                      onTapDetail:
+                          args['onTapDetail'] as Future<void> Function(int),
+                    ),
                   );
                 case '/category':
                   final args = settings.arguments as Map<String, dynamic>;
@@ -129,6 +210,50 @@ class MainApp extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class MainTabBarPage extends StatefulWidget {
+  const MainTabBarPage({super.key});
+
+  @override
+  State<MainTabBarPage> createState() => _MainTabBarPageState();
+}
+
+class _MainTabBarPageState extends State<MainTabBarPage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Movie & TV Series'),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(text: 'Movies'),
+            Tab(text: 'TV Series'),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [MovieHomePage(), const TvSeriesHomePage()],
+      ),
     );
   }
 }
