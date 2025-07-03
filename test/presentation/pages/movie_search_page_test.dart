@@ -50,9 +50,7 @@ void main() {
         await tester.pumpWidget(
           BlocProvider.value(
             value: movieListCubit,
-            child: const MaterialApp(
-              home: MovieSearchPage(),
-            ),
+            child: const MaterialApp(home: MovieSearchPage()),
           ),
         );
         await tester.enterText(find.byType(TextField), 'test');
@@ -64,14 +62,14 @@ void main() {
     });
 
     testWidgets('menampilkan hasil pencarian', (WidgetTester tester) async {
-      when(mockRepository.searchMovies('test')).thenAnswer((_) async => [testMovie]);
+      when(
+        mockRepository.searchMovies('test'),
+      ).thenAnswer((_) async => [testMovie]);
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           BlocProvider.value(
             value: movieListCubit,
-            child: const MaterialApp(
-              home: MovieSearchPage(),
-            ),
+            child: const MaterialApp(home: MovieSearchPage()),
           ),
         );
         await tester.enterText(find.byType(TextField), 'test');
@@ -82,14 +80,14 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan error saat search gagal', (WidgetTester tester) async {
+    testWidgets('menampilkan error saat search gagal', (
+      WidgetTester tester,
+    ) async {
       when(mockRepository.searchMovies('error')).thenThrow(Exception('Failed'));
       await tester.pumpWidget(
         BlocProvider.value(
           value: movieListCubit,
-          child: const MaterialApp(
-            home: MovieSearchPage(),
-          ),
+          child: const MaterialApp(home: MovieSearchPage()),
         ),
       );
       await tester.enterText(find.byType(TextField), 'error');
@@ -98,15 +96,17 @@ void main() {
       expect(find.textContaining('Failed'), findsOneWidget);
     });
 
-    testWidgets('clear button menghapus hasil pencarian', (WidgetTester tester) async {
-      when(mockRepository.searchMovies('test')).thenAnswer((_) async => [testMovie]);
+    testWidgets('clear button menghapus hasil pencarian', (
+      WidgetTester tester,
+    ) async {
+      when(
+        mockRepository.searchMovies('test'),
+      ).thenAnswer((_) async => [testMovie]);
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           BlocProvider.value(
             value: movieListCubit,
-            child: const MaterialApp(
-              home: MovieSearchPage(),
-            ),
+            child: const MaterialApp(home: MovieSearchPage()),
           ),
         );
         await tester.enterText(find.byType(TextField), 'test');
@@ -119,10 +119,16 @@ void main() {
       });
     });
 
-    testWidgets('tap pada movie navigasi ke detail', (WidgetTester tester) async {
-      when(mockRepository.searchMovies('test')).thenAnswer((_) async => [testMovie]);
+    testWidgets('tap pada movie navigasi ke detail', (
+      WidgetTester tester,
+    ) async {
+      when(
+        mockRepository.searchMovies('test'),
+      ).thenAnswer((_) async => [testMovie]);
       when(mockRepository.getMovieDetail(1)).thenAnswer((_) async => testMovie);
-      when(mockRepository.getMovieRecommendations(1)).thenAnswer((_) async => [testMovie]);
+      when(
+        mockRepository.getMovieRecommendations(1),
+      ).thenAnswer((_) async => [testMovie]);
       bool navigated = false;
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(

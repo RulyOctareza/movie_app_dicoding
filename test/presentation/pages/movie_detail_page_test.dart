@@ -49,13 +49,15 @@ void main() {
       isAddedToWatchlistUsecase: IsMovieAddedToWatchlist(mockRepository),
     );
 
-    when(mockRepository.isMovieAddedToWatchlist(1))
-        .thenAnswer((_) async => false);
+    when(
+      mockRepository.isMovieAddedToWatchlist(1),
+    ).thenAnswer((_) async => false);
   });
 
   group('MovieDetailPage Widget Test', () {
-    testWidgets('menampilkan detail movie dengan benar',
-        (WidgetTester tester) async {
+    testWidgets('menampilkan detail movie dengan benar', (
+      WidgetTester tester,
+    ) async {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           BlocProvider.value(
@@ -75,8 +77,9 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan icon jika tidak ada poster',
-        (WidgetTester tester) async {
+    testWidgets('menampilkan icon jika tidak ada poster', (
+      WidgetTester tester,
+    ) async {
       final movieWithoutPoster = Movie(
         id: 1,
         title: 'No Poster Movie',
@@ -103,25 +106,22 @@ void main() {
       expect(find.text('No Poster Movie'), findsNWidgets(2));
     });
 
-    testWidgets('bisa menambah dan menghapus dari watchlist',
-        (WidgetTester tester) async {
+    testWidgets('bisa menambah dan menghapus dari watchlist', (
+      WidgetTester tester,
+    ) async {
       // Set up watchlist mocks
-      when(mockRepository.isMovieAddedToWatchlist(1))
-          .thenAnswer((_) async => false);
-      when(mockRepository.addMovieToWatchlist(1))
-          .thenAnswer((_) async {});
-      when(mockRepository.removeMovieFromWatchlist(1))
-          .thenAnswer((_) async {});
+      when(
+        mockRepository.isMovieAddedToWatchlist(1),
+      ).thenAnswer((_) async => false);
+      when(mockRepository.addMovieToWatchlist(1)).thenAnswer((_) async {});
+      when(mockRepository.removeMovieFromWatchlist(1)).thenAnswer((_) async {});
 
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           BlocProvider.value(
             value: movieListCubit,
             child: MaterialApp(
-              home: MovieDetailPage(
-                detail: testMovie,
-                recommendations: [],
-              ),
+              home: MovieDetailPage(detail: testMovie, recommendations: []),
             ),
           ),
         );
@@ -145,8 +145,7 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan rekomendasi movies',
-        (WidgetTester tester) async {
+    testWidgets('menampilkan rekomendasi movies', (WidgetTester tester) async {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           BlocProvider.value(
@@ -165,17 +164,15 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan pesan jika tidak ada rekomendasi',
-        (WidgetTester tester) async {
+    testWidgets('menampilkan pesan jika tidak ada rekomendasi', (
+      WidgetTester tester,
+    ) async {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           BlocProvider.value(
             value: movieListCubit,
             child: MaterialApp(
-              home: MovieDetailPage(
-                detail: testMovie,
-                recommendations: [],
-              ),
+              home: MovieDetailPage(detail: testMovie, recommendations: []),
             ),
           ),
         );

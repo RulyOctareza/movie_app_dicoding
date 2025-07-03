@@ -39,16 +39,19 @@ void main() {
       isAddedToWatchlistUsecase: IsMovieAddedToWatchlist(mockRepository),
     );
 
-    when(mockRepository.getMovieDetail(1))
-        .thenAnswer((_) async => testMovie);
-    when(mockRepository.getMovieRecommendations(1))
-        .thenAnswer((_) async => [testMovie]);
-    when(mockRepository.isMovieAddedToWatchlist(1))
-        .thenAnswer((_) async => false);
+    when(mockRepository.getMovieDetail(1)).thenAnswer((_) async => testMovie);
+    when(
+      mockRepository.getMovieRecommendations(1),
+    ).thenAnswer((_) async => [testMovie]);
+    when(
+      mockRepository.isMovieAddedToWatchlist(1),
+    ).thenAnswer((_) async => false);
   });
 
   group('MovieCategoryPage Widget Test', () {
-    testWidgets('menampilkan daftar movie kategori', (WidgetTester tester) async {
+    testWidgets('menampilkan daftar movie kategori', (
+      WidgetTester tester,
+    ) async {
       await mockNetworkImagesFor(() async {
         await tester.pumpWidget(
           BlocProvider.value(
@@ -68,16 +71,14 @@ void main() {
       });
     });
 
-    testWidgets('menampilkan pesan kosong saat tidak ada movie',
-        (WidgetTester tester) async {
+    testWidgets('menampilkan pesan kosong saat tidak ada movie', (
+      WidgetTester tester,
+    ) async {
       await tester.pumpWidget(
         BlocProvider.value(
           value: movieListCubit,
           child: MaterialApp(
-            home: MovieCategoryPage(
-              title: 'Popular Movies',
-              movies: [],
-            ),
+            home: MovieCategoryPage(title: 'Popular Movies', movies: []),
           ),
         ),
       );
@@ -85,8 +86,9 @@ void main() {
       expect(find.text('No movies found'), findsOneWidget);
     });
 
-    testWidgets('menampilkan icon saat tidak ada poster',
-        (WidgetTester tester) async {
+    testWidgets('menampilkan icon saat tidak ada poster', (
+      WidgetTester tester,
+    ) async {
       final movieWithoutPoster = Movie(
         id: 1,
         title: 'No Poster Movie',
@@ -113,8 +115,9 @@ void main() {
       expect(find.text('No Poster Movie'), findsOneWidget);
     });
 
-    testWidgets('tap pada movie membuka halaman detail',
-        (WidgetTester tester) async {
+    testWidgets('tap pada movie membuka halaman detail', (
+      WidgetTester tester,
+    ) async {
       bool navigatedToDetail = false;
 
       await mockNetworkImagesFor(() async {

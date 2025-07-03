@@ -147,7 +147,9 @@ class MovieHomePage extends StatelessWidget {
                   final cubit = context.read<MovieListCubit>();
                   try {
                     final detail = await cubit.fetchDetail(movie.id);
-                    final recommendations = await cubit.fetchRecommendations(movie.id);
+                    final recommendations = await cubit.fetchRecommendations(
+                      movie.id,
+                    );
                     if (context.mounted) {
                       Navigator.pushNamed(
                         context,

@@ -73,10 +73,7 @@ void main() {
       return cubit;
     },
     act: (cubit) => cubit.fetchAll(),
-    expect: () => [
-      isA<MovieListLoading>(),
-      isA<MovieListLoaded>(),
-    ],
+    expect: () => [isA<MovieListLoading>(), isA<MovieListLoaded>()],
   );
 
   blocTest<MovieListCubit, MovieListState>(
@@ -88,10 +85,7 @@ void main() {
       return cubit;
     },
     act: (cubit) => cubit.fetchAll(),
-    expect: () => [
-      isA<MovieListLoading>(),
-      isA<MovieListError>(),
-    ],
+    expect: () => [isA<MovieListLoading>(), isA<MovieListError>()],
   );
 
   test('fetchDetail returns correct movie', () async {
@@ -101,7 +95,9 @@ void main() {
   });
 
   test('fetchRecommendations returns correct list', () async {
-    when(mockRepository.getMovieRecommendations(1)).thenAnswer((_) async => tList);
+    when(
+      mockRepository.getMovieRecommendations(1),
+    ).thenAnswer((_) async => tList);
     final result = await cubit.fetchRecommendations(1);
     expect(result, tList);
   });
@@ -120,7 +116,9 @@ void main() {
   });
 
   test('isAddedToWatchlist returns correct value', () async {
-    when(mockRepository.isMovieAddedToWatchlist(1)).thenAnswer((_) async => true);
+    when(
+      mockRepository.isMovieAddedToWatchlist(1),
+    ).thenAnswer((_) async => true);
     final result = await cubit.isAddedToWatchlist(1);
     expect(result, true);
   });
