@@ -13,7 +13,20 @@ Untuk melakukan setup file sertifikat SSL pinning, ikuti langkah-langkah berikut
    ```yaml
    flutter:
      assets:
-       - assets/certificates/tmdb.cer
+       - assets/certificates/themoviedb.org.pem
    ```
 
 2. Simpan file sertifikat `.cer` dari TMDB di folder `assets/certificates/`
+
+## Screenshots
+
+Berikut adalah beberapa screenshot hasil integrasi Analytics & Crashlytics:
+
+### Firebase Analytics
+
+![Analytics Dashboard](screenshots/analytics.png)
+![Analytics Event](screenshots/analytics2.png)
+
+### Firebase Crashlytics
+
+![Crashlytics Dashboard](screenshots/crashlytics.png)

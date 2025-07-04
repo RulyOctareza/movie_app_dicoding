@@ -49,10 +49,10 @@ class MovieHomePage extends StatelessWidget {
             icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () => Navigator.pushNamed(context, '/movie_search'),
           ),
-          TextButton(
-            onPressed: () => throw Exception(),
-            child: const Text("Throw Test Exception"),
-          ),
+          // TextButton(
+          //   onPressed: () => throw Exception(),
+          //   child: const Text("Throw Test Exception"),
+          // ),
         ],
       ),
       body: BlocBuilder<MovieListCubit, MovieListState>(
