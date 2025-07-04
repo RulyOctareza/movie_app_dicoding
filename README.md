@@ -30,3 +30,8 @@ Berikut adalah beberapa screenshot hasil integrasi Analytics & Crashlytics:
 ### Firebase Crashlytics
 
 ![Crashlytics Dashboard](screenshots/crashlytics.png)
+
+## Build Status
+
+![Build Actions](screenshots/build-actions.png)
+![Passing](screenshots/passing.png)
