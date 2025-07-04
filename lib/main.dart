@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'common/ssl_pinning.dart';
 
 import 'data/datasources/tv_series_local_data_source.dart';
 import 'data/datasources/tv_series_remote_data_source.dart';
@@ -36,7 +37,7 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   Future<Map<String, dynamic>> _initDependencies() async {
-    final client = http.Client();
+    final client = await SslPinning.createPinnedClient();
     final prefs = await SharedPreferences.getInstance();
     // Load API key from .env
     final apiKey = dotenv.env['api_key'] ?? '2174d146bb9c0eab47529b2e77d6b526';
