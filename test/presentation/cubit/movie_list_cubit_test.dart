@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_app_dicoding/domain/entities/movie.dart';
-import 'package:movie_app_dicoding/domain/repositories/movie_repository.dart';
 import 'package:movie_app_dicoding/domain/usecases/movie_usecases.dart';
 import 'package:movie_app_dicoding/presentation/cubit/movie_list_cubit.dart';
 import 'package:mockito/mockito.dart';

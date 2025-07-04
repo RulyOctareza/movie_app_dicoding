@@ -15,6 +15,7 @@ abstract class MovieRemoteDataSource {
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
+  // ignore: constant_identifier_names
   static const BASE_URL = 'https://api.themoviedb.org/3';
   final http.Client client;
   final String apiKey = '2174d146bb9c0eab47529b2e77d6b526';
