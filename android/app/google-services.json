@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "780565131672",
+    "project_id": "movie-app-dicoding",
+    "storage_bucket": "movie-app-dicoding.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780565131672:android:0ab9af7d58ba17836a3bed",
+        "android_client_info": {
+          "package_name": "com.example.movie_app_dicoding"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqdpeswmIlAqmAlxgQaQxpM3MA-6R27ps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
