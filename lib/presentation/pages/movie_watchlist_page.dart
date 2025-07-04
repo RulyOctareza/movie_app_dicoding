@@ -58,8 +58,9 @@ class MovieWatchlistPage extends StatelessWidget {
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () async {
+                        final messenger = ScaffoldMessenger.of(context);
                         await onRemove(movie.id);
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        messenger.showSnackBar(
                           const SnackBar(
                             content: Text('Removed from Watchlist'),
                           ),

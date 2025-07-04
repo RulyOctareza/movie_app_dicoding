@@ -41,26 +41,26 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     setState(() => _loading = true);
     if (_isInWatchlist) {
       await cubit.removeFromWatchlist(widget.detail.id);
-      if (mounted) {
-        setState(() {
-          _isInWatchlist = false;
-          _loading = false;
-        });
-      }
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Removed from Watchlist')));
+      if (!mounted) return;
+      setState(() {
+        _isInWatchlist = false;
+        _loading = false;
+      });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Removed from Watchlist')),
+      );
     } else {
       await cubit.addToWatchlistUsecase(widget.detail.id);
-      if (mounted) {
-        setState(() {
-          _isInWatchlist = true;
-          _loading = false;
-        });
-      }
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Added to Watchlist')));
+      if (!mounted) return;
+      setState(() {
+        _isInWatchlist = true;
+        _loading = false;
+      });
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Added to Watchlist')),
+      );
     }
   }
 
