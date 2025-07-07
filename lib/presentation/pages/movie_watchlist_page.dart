@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app_dicoding/presentation/cubit/movie_list_cubit.dart';
 
 class RouteObserverProvider {
   static final RouteObserver<PageRoute> routeObserver =
@@ -41,9 +43,12 @@ class _MovieWatchlistPageState extends State<MovieWatchlistPage>
   }
 
   @override
-  void didPopNext() {
-    // Trigger refresh when returning to this page
-    setState(() {});
+  void didPopNext() async {
+    final cubit = context.read<MovieListCubit>();
+    final updatedWatchlist = await cubit.fetchWatchlistList();
+    setState(() {
+      _watchlist = updatedWatchlist;
+    });
   }
 
   @override
