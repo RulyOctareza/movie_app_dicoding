@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
-class MovieWatchlistPage extends StatelessWidget {
+class RouteObserverProvider {
+  static final RouteObserver<PageRoute> routeObserver =
+      RouteObserver<PageRoute>();
+}
+
+class MovieWatchlistPage extends StatefulWidget {
   final List watchlist;
   final Future<void> Function(int) onRemove;
   final Future<void> Function(int) onTapDetail;
@@ -10,6 +16,36 @@ class MovieWatchlistPage extends StatelessWidget {
     required this.onRemove,
     required this.onTapDetail,
   });
+
+  @override
+  State<MovieWatchlistPage> createState() => _MovieWatchlistPageState();
+}
+
+class _MovieWatchlistPageState extends State<MovieWatchlistPage>
+    with RouteAware {
+  List _watchlist = [];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    RouteObserverProvider.routeObserver.subscribe(
+      this,
+      ModalRoute.of(context) as PageRoute,
+    );
+    _watchlist = widget.watchlist;
+  }
+
+  @override
+  void dispose() {
+    RouteObserverProvider.routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    // Trigger refresh when returning to this page
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +59,7 @@ class MovieWatchlistPage extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: watchlist.isEmpty
+      body: _watchlist.isEmpty
           ? const Center(
               child: Text(
                 'No movies in watchlist',
@@ -31,9 +67,9 @@ class MovieWatchlistPage extends StatelessWidget {
               ),
             )
           : ListView.builder(
-              itemCount: watchlist.length,
+              itemCount: _watchlist.length,
               itemBuilder: (context, index) {
-                final movie = watchlist[index];
+                final movie = _watchlist[index];
                 return Card(
                   color: const Color(0xFF232441),
                   margin: const EdgeInsets.symmetric(
@@ -59,16 +95,17 @@ class MovieWatchlistPage extends StatelessWidget {
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () async {
                         final messenger = ScaffoldMessenger.of(context);
-                        await onRemove(movie.id);
+                        await widget.onRemove(movie.id);
                         messenger.showSnackBar(
                           const SnackBar(
                             content: Text('Removed from Watchlist'),
                           ),
                         );
+                        setState(() {});
                       },
                     ),
                     onTap: () async {
-                      await onTapDetail(movie.id);
+                      await widget.onTapDetail(movie.id);
                     },
                   ),
                 );

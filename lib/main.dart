@@ -24,6 +24,8 @@ import 'presentation/pages/movie_category_page.dart';
 import 'presentation/pages/movie_detail_page.dart';
 import 'presentation/pages/movie_search_page.dart';
 import 'presentation/pages/movie_watchlist_page.dart';
+import 'presentation/pages/movie_watchlist_page.dart'
+    show RouteObserverProvider;
 import 'data/datasources/movie_remote_data_source.dart';
 import 'data/datasources/movie_local_data_source.dart';
 import 'data/repositories/movie_repository_impl.dart';
@@ -136,6 +138,7 @@ class MainApp extends StatelessWidget {
           ],
           child: MaterialApp(
             title: 'Movie & TV Series App',
+            navigatorObservers: [RouteObserverProvider.routeObserver],
             home: const MainTabBarPage(),
             onGenerateRoute: (settings) {
               switch (settings.name) {
