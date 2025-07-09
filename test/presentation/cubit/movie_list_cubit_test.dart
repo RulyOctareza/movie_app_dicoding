@@ -69,6 +69,7 @@ void main() {
       when(mockRepository.getPopularMovies()).thenAnswer((_) async => tList);
       when(mockRepository.getTopRatedMovies()).thenAnswer((_) async => tList);
       when(mockRepository.getNowPlayingMovies()).thenAnswer((_) async => tList);
+      when(mockRepository.getMovieWatchlist()).thenAnswer((_) async => tList);
       return cubit;
     },
     act: (cubit) => cubit.fetchAll(),

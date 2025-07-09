@@ -70,6 +70,7 @@ void main() {
       when(mockRepo.getPopularTvSeries()).thenAnswer((_) async => tList);
       when(mockRepo.getTopRatedTvSeries()).thenAnswer((_) async => tList);
       when(mockRepo.getNowPlayingTvSeries()).thenAnswer((_) async => tList);
+      when(mockRepo.getWatchlist()).thenAnswer((_) async => []);
       return cubit;
     },
     act: (cubit) => cubit.fetchAll(),
@@ -85,6 +86,7 @@ void main() {
       when(mockRepo.getPopularTvSeries()).thenThrow(Exception('error'));
       when(mockRepo.getTopRatedTvSeries()).thenAnswer((_) async => tList);
       when(mockRepo.getNowPlayingTvSeries()).thenAnswer((_) async => tList);
+      when(mockRepo.getWatchlist()).thenAnswer((_) async => []);
       return cubit;
     },
     act: (cubit) => cubit.fetchAll(),
@@ -100,6 +102,7 @@ void main() {
       when(mockRepo.getPopularTvSeries()).thenAnswer((_) async => []);
       when(mockRepo.getTopRatedTvSeries()).thenAnswer((_) async => []);
       when(mockRepo.getNowPlayingTvSeries()).thenAnswer((_) async => []);
+      when(mockRepo.getWatchlist()).thenAnswer((_) async => []);
       return cubit;
     },
     act: (cubit) => cubit.fetchAll(),
@@ -165,12 +168,14 @@ void main() {
       seasons: [],
     );
     when(mockRepo.addToWatchlist(detail)).thenAnswer((_) async {});
+    when(mockRepo.getWatchlist()).thenAnswer((_) async => []);
     await cubit.addToWatchlist(detail);
     verify(mockRepo.addToWatchlist(detail)).called(1);
   });
 
   test('removeFromWatchlist calls repository', () async {
     when(mockRepo.removeFromWatchlist(1)).thenAnswer((_) async {});
+    when(mockRepo.getWatchlist()).thenAnswer((_) async => []);
     await cubit.removeFromWatchlist(1);
     verify(mockRepo.removeFromWatchlist(1)).called(1);
   });

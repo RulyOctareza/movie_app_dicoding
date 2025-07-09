@@ -36,11 +36,13 @@ class MovieListCubit extends Cubit<MovieListState> {
       final popular = await getPopularMovies();
       final topRated = await getTopRatedMovies();
       final nowPlaying = await getNowPlayingMovies();
+      final watchlist = await getWatchlist();
       emit(
         MovieListLoaded(
           popular: popular,
           topRated: topRated,
           nowPlaying: nowPlaying,
+          watchlist: watchlist,
         ),
       );
     } catch (e) {
@@ -48,12 +50,36 @@ class MovieListCubit extends Cubit<MovieListState> {
     }
   }
 
-  Future<List<Movie>> fetchWatchlistList() async {
-    return await getWatchlist();
+  Future<void> fetchAndEmitWatchlist() async {
+    final watchlist = await getWatchlist();
+    final currentState = state;
+    if (currentState is MovieListLoaded) {
+      emit(
+        MovieListLoaded(
+          popular: currentState.popular,
+          topRated: currentState.topRated,
+          nowPlaying: currentState.nowPlaying,
+          watchlist: watchlist,
+        ),
+      );
+    } else {
+      emit(MovieWatchlistLoaded(watchlist));
+    }
+  }
+
+  Future<void> addToWatchlist(int movieId) async {
+    await addToWatchlistUsecase(movieId);
+    await fetchAndEmitWatchlist();
   }
 
   Future<void> removeFromWatchlist(int movieId) async {
     await removeFromWatchlistUsecase(movieId);
+    await fetchAndEmitWatchlist();
+  }
+
+  Future<List<Movie>> fetchWatchlistList() async {
+    final watchlist = await getWatchlist();
+    return watchlist;
   }
 
   Future<Movie> fetchDetail(int id) async {

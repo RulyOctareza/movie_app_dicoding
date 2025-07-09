@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/tv_series.dart';
 import '../cubit/tv_series_list_cubit.dart';
+import '../cubit/tv_series_list_state.dart';
 
 class WatchlistPage extends StatelessWidget {
-  final List<TvSeries> watchlist;
-  final Function(int) onRemove;
-  final Function(int) onTapDetail;
-
   const WatchlistPage({
     super.key,
-    required this.watchlist,
-    required this.onRemove,
-    required this.onTapDetail,
+    required watchlist,
+    required onTapDetail,
+    required onRemove,
   });
 
   @override
@@ -25,14 +22,27 @@ class WatchlistPage extends StatelessWidget {
         title: const Text('Watchlist', style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: watchlist.isEmpty
-          ? const Center(
-              child: Text(
-                'Tidak ada TV Series di watchlist',
-                style: TextStyle(color: Colors.white70),
-              ),
-            )
-          : ListView.builder(
+      body: BlocBuilder<TvSeriesListCubit, TvSeriesListState>(
+        builder: (context, state) {
+          List<TvSeries> watchlist = [];
+          if (state is TvSeriesListLoaded) {
+            watchlist = state.watchlist;
+          } else if (state is TvSeriesWatchlistLoaded) {
+            watchlist = state.watchlist;
+          }
+          if (state is TvSeriesListLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is TvSeriesListLoaded ||
+              state is TvSeriesWatchlistLoaded) {
+            if (watchlist.isEmpty) {
+              return const Center(
+                child: Text(
+                  'Tidak ada TV Series di watchlist',
+                  style: TextStyle(color: Colors.white70),
+                ),
+              );
+            }
+            return ListView.builder(
               itemCount: watchlist.length,
               itemBuilder: (context, index) {
                 final tv = watchlist[index];
@@ -67,27 +77,15 @@ class WatchlistPage extends StatelessWidget {
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () async {
-                        // Hapus dari watchlist
-                        final currentContext = context;
-                        await onRemove(tv.id);
-                        // Refresh halaman setelah hapus
-                        if (currentContext.mounted) {
-                          final cubit = currentContext
-                              .read<TvSeriesListCubit>();
-                          final updated = await cubit.getWatchlistList();
-                          if (currentContext.mounted) {
-                            Navigator.pop(currentContext);
-                            Navigator.pushNamed(
-                              currentContext,
-                              '/watchlist',
-                              arguments: {
-                                'watchlist': updated,
-                                'onRemove': onRemove,
-                                'onTapDetail': onTapDetail,
-                              },
-                            );
-                          }
-                        }
+                        await context
+                            .read<TvSeriesListCubit>()
+                            .removeFromWatchlist(tv.id);
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Removed from Watchlist'),
+                          ),
+                        );
                       },
                     ),
                     onTap: () async {
@@ -96,21 +94,31 @@ class WatchlistPage extends StatelessWidget {
                       final recommendations = await cubit.getRecommendations(
                         tv.id,
                       );
-                      if (context.mounted) {
-                        Navigator.pushNamed(
-                          context,
-                          '/detail',
-                          arguments: {
-                            'detail': detail,
-                            'recommendations': recommendations,
-                          },
-                        );
-                      }
+                      if (!context.mounted) return;
+                      Navigator.pushNamed(
+                        context,
+                        '/detail',
+                        arguments: {
+                          'detail': detail,
+                          'recommendations': recommendations,
+                        },
+                      );
                     },
                   ),
                 );
               },
-            ),
+            );
+          } else if (state is TvSeriesListError) {
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(color: Colors.white),
+              ),
+            );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 }

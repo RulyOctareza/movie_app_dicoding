@@ -28,7 +28,12 @@ void main() {
       ];
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => tvList);
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: tvList,
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -36,10 +41,10 @@ void main() {
           MaterialApp(
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
-              child: WatchlistPage(
-                watchlist: tvList,
-                onRemove: (_) async {},
-                onTapDetail: (_) async {},
+              child: const WatchlistPage(
+                watchlist: [],
+                onTapDetail: null,
+                onRemove: null,
               ),
             ),
           ),
@@ -53,7 +58,12 @@ void main() {
     ) async {
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => []);
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -61,10 +71,10 @@ void main() {
           MaterialApp(
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
-              child: WatchlistPage(
+              child: const WatchlistPage(
                 watchlist: [],
-                onRemove: (_) async {},
-                onTapDetail: (_) async {},
+                onTapDetail: null,
+                onRemove: null,
               ),
             ),
           ),
@@ -87,7 +97,12 @@ void main() {
       ];
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => tvList);
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: tvList,
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -95,10 +110,10 @@ void main() {
           MaterialApp(
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
-              child: WatchlistPage(
-                watchlist: tvList,
-                onRemove: (_) async {},
-                onTapDetail: (_) async {},
+              child: const WatchlistPage(
+                watchlist: [],
+                onTapDetail: null,
+                onRemove: null,
               ),
             ),
           ),
@@ -122,7 +137,12 @@ void main() {
         ];
         when(mockCubit.getWatchlistList()).thenAnswer((_) async => tvList);
         when(mockCubit.state).thenReturn(
-          TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+          TvSeriesListLoaded(
+            popular: [],
+            topRated: [],
+            nowPlaying: [],
+            watchlist: tvList,
+          ),
         );
         when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
         await mockNetworkImagesFor(() async {
@@ -130,10 +150,10 @@ void main() {
             MaterialApp(
               home: BlocProvider<TvSeriesListCubit>.value(
                 value: mockCubit,
-                child: WatchlistPage(
-                  watchlist: tvList,
-                  onRemove: (_) async {},
-                  onTapDetail: (_) async {},
+                child: const WatchlistPage(
+                  watchlist: [],
+                  onTapDetail: null,
+                  onRemove: null,
                 ),
               ),
             ),
@@ -164,7 +184,12 @@ void main() {
       ];
       when(mockCubit.getWatchlistList()).thenAnswer((_) async => tvList);
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: tvList,
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -172,10 +197,10 @@ void main() {
           MaterialApp(
             home: BlocProvider<TvSeriesListCubit>.value(
               value: mockCubit,
-              child: WatchlistPage(
-                watchlist: tvList,
-                onRemove: (_) async {},
-                onTapDetail: (_) async {},
+              child: const WatchlistPage(
+                watchlist: [],
+                onTapDetail: null,
+                onRemove: null,
               ),
             ),
           ),

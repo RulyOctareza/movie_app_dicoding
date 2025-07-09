@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app_dicoding/presentation/cubit/movie_list_cubit.dart';
 
 class MovieCategoryPage extends StatelessWidget {
   final String title;
@@ -55,16 +57,20 @@ class MovieCategoryPage extends StatelessWidget {
                       style: const TextStyle(color: Colors.white),
                     ),
                     subtitle: Text(
-                      'Rating: \\${movie.voteAverage}',
+                      'Rating: ${movie.voteAverage}',
                       style: const TextStyle(color: Colors.white70),
                     ),
-                    onTap: () {
+                    onTap: () async {
+                      final cubit = context.read<MovieListCubit>();
+                      final recommendations = await cubit.fetchRecommendations(
+                        movie.id,
+                      );
                       Navigator.pushNamed(
                         context,
                         '/movie_detail',
                         arguments: {
                           'detail': movie,
-                          'recommendations': const [], // Optionally fetch recs
+                          'recommendations': recommendations,
                         },
                       );
                     },

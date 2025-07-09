@@ -39,15 +39,34 @@ class TvSeriesListCubit extends Cubit<TvSeriesListState> {
       final popular = await getPopularTvSeries();
       final topRated = await getTopRatedTvSeries();
       final nowPlaying = await getNowPlayingTvSeries();
+      final watchlist = await getWatchlist();
       emit(
         TvSeriesListLoaded(
           popular: popular,
           topRated: topRated,
           nowPlaying: nowPlaying,
+          watchlist: watchlist,
         ),
       );
     } catch (e) {
       emit(TvSeriesListError(e.toString()));
+    }
+  }
+
+  Future<void> fetchAndEmitWatchlist() async {
+    final watchlist = await getWatchlist();
+    final currentState = state;
+    if (currentState is TvSeriesListLoaded) {
+      emit(
+        TvSeriesListLoaded(
+          popular: currentState.popular,
+          topRated: currentState.topRated,
+          nowPlaying: currentState.nowPlaying,
+          watchlist: watchlist,
+        ),
+      );
+    } else {
+      emit(TvSeriesWatchlistLoaded(watchlist));
     }
   }
 
@@ -63,16 +82,19 @@ class TvSeriesListCubit extends Cubit<TvSeriesListState> {
     return await getTvSeriesRecommendations(id);
   }
 
-  Future<List<TvSeries>> getWatchlistList() async {
-    return await getWatchlist();
-  }
-
   Future<void> addToWatchlist(TvSeriesDetail detail) async {
     await addToWatchlistUsecase(detail);
+    await fetchAndEmitWatchlist();
   }
 
   Future<void> removeFromWatchlist(int id) async {
     await removeFromWatchlistUsecase(id);
+    await fetchAndEmitWatchlist();
+  }
+
+  Future<List<TvSeries>> getWatchlistList() async {
+    final watchlist = await getWatchlist();
+    return watchlist;
   }
 
   Future<bool> isAddedToWatchlist(int id) async {

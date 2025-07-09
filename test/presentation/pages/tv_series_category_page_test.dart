@@ -25,6 +25,7 @@ void main() {
           ],
           topRated: [],
           nowPlaying: [],
+          watchlist: const [],
         ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
@@ -82,6 +83,7 @@ void main() {
           ],
           topRated: [],
           nowPlaying: [],
+          watchlist: const [],
         ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
@@ -122,7 +124,12 @@ void main() {
           ),
         ];
         when(mockCubit.state).thenReturn(
-          TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []),
+          TvSeriesListLoaded(
+            popular: tvList,
+            topRated: [],
+            nowPlaying: [],
+            watchlist: const [],
+          ),
         );
         when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
         when(mockCubit.getDetail(any)).thenAnswer((_) async => tvList[0]);
@@ -162,7 +169,12 @@ void main() {
           ),
         ];
         when(mockCubit.state).thenReturn(
-          TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []),
+          TvSeriesListLoaded(
+            popular: tvList,
+            topRated: [],
+            nowPlaying: [],
+            watchlist: const [],
+          ),
         );
         when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
         await tester.pumpWidget(
@@ -201,7 +213,12 @@ void main() {
         ),
       ];
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: tvList,
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(

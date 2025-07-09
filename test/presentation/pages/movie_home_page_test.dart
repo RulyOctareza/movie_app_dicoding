@@ -28,7 +28,12 @@ void main() {
 
   Future<void> setUpNavigationTest(WidgetTester tester) async {
     movieListCubit.emit(
-      MovieListLoaded(popular: movies, topRated: movies, nowPlaying: movies),
+      MovieListLoaded(
+        popular: movies,
+        topRated: movies,
+        nowPlaying: movies,
+        watchlist: const [],
+      ),
     );
 
     await tester.pumpWidget(
@@ -95,7 +100,12 @@ void main() {
     ) async {
       // Emit loaded state with test data
       movieListCubit.emit(
-        MovieListLoaded(popular: movies, topRated: movies, nowPlaying: movies),
+        MovieListLoaded(
+          popular: movies,
+          topRated: movies,
+          nowPlaying: movies,
+          watchlist: const [],
+        ),
       );
 
       await mockNetworkImagesFor(() async {
@@ -164,6 +174,7 @@ void main() {
             popular: movies,
             topRated: movies,
             nowPlaying: movies,
+            watchlist: const [],
           ),
         );
 
@@ -180,7 +191,12 @@ void main() {
       WidgetTester tester,
     ) async {
       movieListCubit.emit(
-        MovieListLoaded(popular: movies, topRated: movies, nowPlaying: movies),
+        MovieListLoaded(
+          popular: movies,
+          topRated: movies,
+          nowPlaying: movies,
+          watchlist: const [],
+        ),
       );
 
       await tester.pumpWidget(

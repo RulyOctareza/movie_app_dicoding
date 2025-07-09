@@ -13,15 +13,24 @@ class MovieListLoaded extends MovieListState {
   final List<Movie> popular;
   final List<Movie> topRated;
   final List<Movie> nowPlaying;
+  final List<Movie> watchlist;
 
   MovieListLoaded({
     required this.popular,
     required this.topRated,
     required this.nowPlaying,
+    required this.watchlist,
   });
 
   @override
-  List<Object?> get props => [popular, topRated, nowPlaying];
+  List<Object?> get props => [popular, topRated, nowPlaying, watchlist];
+}
+
+class MovieWatchlistLoaded extends MovieListState {
+  final List<Movie> movies;
+  MovieWatchlistLoaded(this.movies);
+  @override
+  List<Object?> get props => [movies];
 }
 
 class MovieListError extends MovieListState {

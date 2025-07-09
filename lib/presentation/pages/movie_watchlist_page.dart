@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app_dicoding/presentation/cubit/movie_list_cubit.dart';
+import '../../domain/entities/movie.dart';
 
 class RouteObserverProvider {
   static final RouteObserver<PageRoute> routeObserver =
@@ -8,14 +9,11 @@ class RouteObserverProvider {
 }
 
 class MovieWatchlistPage extends StatefulWidget {
-  final List watchlist;
-  final Future<void> Function(int) onRemove;
-  final Future<void> Function(int) onTapDetail;
   const MovieWatchlistPage({
     super.key,
-    required this.watchlist,
-    required this.onRemove,
-    required this.onTapDetail,
+    required watchlist,
+    required Future<void> Function(int p1) onRemove,
+    required Future<void> Function(int p1) onTapDetail,
   });
 
   @override
@@ -24,8 +22,6 @@ class MovieWatchlistPage extends StatefulWidget {
 
 class _MovieWatchlistPageState extends State<MovieWatchlistPage>
     with RouteAware {
-  List _watchlist = [];
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -33,7 +29,8 @@ class _MovieWatchlistPageState extends State<MovieWatchlistPage>
       this,
       ModalRoute.of(context) as PageRoute,
     );
-    _watchlist = widget.watchlist;
+    // Fetch watchlist saat halaman pertama kali dibuka
+    context.read<MovieListCubit>().fetchAndEmitWatchlist();
   }
 
   @override
@@ -43,12 +40,9 @@ class _MovieWatchlistPageState extends State<MovieWatchlistPage>
   }
 
   @override
-  void didPopNext() async {
-    final cubit = context.read<MovieListCubit>();
-    final updatedWatchlist = await cubit.fetchWatchlistList();
-    setState(() {
-      _watchlist = updatedWatchlist;
-    });
+  void didPopNext() {
+    // Fetch ulang watchlist saat kembali ke halaman ini
+    context.read<MovieListCubit>().fetchAndEmitWatchlist();
   }
 
   @override
@@ -63,17 +57,30 @@ class _MovieWatchlistPageState extends State<MovieWatchlistPage>
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: _watchlist.isEmpty
-          ? const Center(
-              child: Text(
-                'No movies in watchlist',
-                style: TextStyle(color: Colors.white),
-              ),
-            )
-          : ListView.builder(
-              itemCount: _watchlist.length,
+      body: BlocBuilder<MovieListCubit, MovieListState>(
+        builder: (context, state) {
+          List<Movie> watchlist = [];
+          if (state is MovieListLoaded) {
+            watchlist = state.watchlist;
+          } else if (state is MovieWatchlistLoaded) {
+            watchlist = state.movies;
+          }
+          if (state is MovieListLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is MovieListLoaded ||
+              state is MovieWatchlistLoaded) {
+            if (watchlist.isEmpty) {
+              return const Center(
+                child: Text(
+                  'No movies in watchlist',
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
+            }
+            return ListView.builder(
+              itemCount: watchlist.length,
               itemBuilder: (context, index) {
-                final movie = _watchlist[index];
+                final movie = watchlist[index];
                 return Card(
                   color: const Color(0xFF232441),
                   margin: const EdgeInsets.symmetric(
@@ -81,8 +88,7 @@ class _MovieWatchlistPageState extends State<MovieWatchlistPage>
                     vertical: 8,
                   ),
                   child: ListTile(
-                    leading:
-                        movie.posterPath != null && movie.posterPath.isNotEmpty
+                    leading: movie.posterPath.isNotEmpty
                         ? Image.network(
                             'https://image.tmdb.org/t/p/w92${movie.posterPath}',
                           )
@@ -92,29 +98,53 @@ class _MovieWatchlistPageState extends State<MovieWatchlistPage>
                       style: const TextStyle(color: Colors.white),
                     ),
                     subtitle: Text(
-                      movie.releaseDate ?? '-',
+                      movie.releaseDate,
                       style: const TextStyle(color: Colors.white70),
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () async {
-                        final messenger = ScaffoldMessenger.of(context);
-                        await widget.onRemove(movie.id);
-                        messenger.showSnackBar(
+                        await context
+                            .read<MovieListCubit>()
+                            .removeFromWatchlist(movie.id);
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Removed from Watchlist'),
                           ),
                         );
-                        setState(() {});
                       },
                     ),
                     onTap: () async {
-                      await widget.onTapDetail(movie.id);
+                      final cubit = context.read<MovieListCubit>();
+                      final recommendations = await cubit.fetchRecommendations(
+                        movie.id,
+                      );
+                      if (!context.mounted) return;
+                      Navigator.pushNamed(
+                        context,
+                        '/movie_detail',
+                        arguments: {
+                          'detail': movie,
+                          'recommendations': recommendations,
+                        },
+                      );
                     },
                   ),
                 );
               },
-            ),
+            );
+          } else if (state is MovieListError) {
+            return Center(
+              child: Text(
+                state.message,
+                style: const TextStyle(color: Colors.white),
+              ),
+            );
+          }
+          return const SizedBox();
+        },
+      ),
     );
   }
 }

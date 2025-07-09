@@ -33,6 +33,7 @@ void main() {
           popular: tvList,
           topRated: tvList,
           nowPlaying: tvList,
+          watchlist: const [],
         ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
@@ -72,6 +73,7 @@ void main() {
           popular: tvList,
           topRated: tvList,
           nowPlaying: tvList,
+          watchlist: const [],
         ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
@@ -101,7 +103,12 @@ void main() {
       WidgetTester tester,
     ) async {
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {

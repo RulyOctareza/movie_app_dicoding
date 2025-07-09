@@ -30,7 +30,12 @@ void main() {
         mockCubit.getSeasonEpisodes(any, any),
       ).thenAnswer((_) async => episodes);
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {

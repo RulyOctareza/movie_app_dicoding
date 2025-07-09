@@ -17,7 +17,12 @@ void main() {
 
     testWidgets('menampilkan hasil pencarian', (WidgetTester tester) async {
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
@@ -36,7 +41,12 @@ void main() {
     testWidgets('menampilkan error state', (WidgetTester tester) async {
       when(mockCubit.search(any)).thenThrow(Exception('Error test'));
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
@@ -68,7 +78,12 @@ void main() {
         ],
       );
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(
@@ -122,7 +137,12 @@ void main() {
         return [];
       });
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await tester.pumpWidget(

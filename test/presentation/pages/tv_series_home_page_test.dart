@@ -51,6 +51,7 @@ void main() {
           popular: tvList,
           topRated: tvList,
           nowPlaying: tvList,
+          watchlist: const [], // <-- add required argument
         ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
@@ -110,7 +111,12 @@ void main() {
       WidgetTester tester,
     ) async {
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -132,7 +138,12 @@ void main() {
       WidgetTester tester,
     ) async {
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -168,6 +179,7 @@ void main() {
           popular: tvList,
           topRated: tvList,
           nowPlaying: tvList,
+          watchlist: const [], // <-- add required argument
         ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
@@ -211,6 +223,7 @@ void main() {
           popular: tvList,
           topRated: tvList,
           nowPlaying: tvList,
+          watchlist: const [], // <-- add required argument
         ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
@@ -240,7 +253,12 @@ void main() {
       WidgetTester tester,
     ) async {
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -303,6 +321,7 @@ void main() {
           popular: tvList,
           topRated: tvList,
           nowPlaying: tvList,
+          watchlist: const [], // <-- add required argument
         ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
@@ -333,7 +352,12 @@ void main() {
       WidgetTester tester,
     ) async {
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: [], topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: [],
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -371,7 +395,12 @@ void main() {
         ),
       ];
       when(mockCubit.state).thenReturn(
-        TvSeriesListLoaded(popular: tvList, topRated: [], nowPlaying: []),
+        TvSeriesListLoaded(
+          popular: tvList,
+          topRated: [],
+          nowPlaying: [],
+          watchlist: const [],
+        ),
       );
       when(mockCubit.stream).thenAnswer((_) => const Stream.empty());
       await mockNetworkImagesFor(() async {
@@ -431,6 +460,7 @@ void main() {
             popular: tvList,
             topRated: tvList,
             nowPlaying: tvList,
+            watchlist: const [], // <-- add required argument
           ),
         ]),
       );
@@ -467,6 +497,7 @@ void main() {
           popular: tvList,
           topRated: tvList,
           nowPlaying: tvList,
+          watchlist: const [], // <-- add required argument
         ),
       );
       when(mockCubit.stream).thenAnswer(
@@ -475,6 +506,8 @@ void main() {
             popular: tvList,
             topRated: tvList,
             nowPlaying: tvList,
+            watchlist:
+                const [], // Fix: use empty list for watchlist to match constructor
           ),
           TvSeriesListError('Error after loaded!'),
         ]),
